@@ -119,10 +119,10 @@
     <nav id="sidebar" class="fixed left-0 top-0 h-full w-sidebar-width bg-white dark:bg-slate-900 shadow-sm z-50 flex flex-col py-8 px-4 gap-unit border-r border-slate-100 dark:border-slate-800 transition-transform duration-300 -translate-x-full md:translate-x-0">
         <div class="px-4 mb-8 flex justify-between items-center">
             <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
-                    <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">send</span>
+                <div class="sidebar-logo-wrap">
+                    <span class="material-symbols-outlined text-[18px] text-white" style="font-variation-settings: 'FILL' 1;">send</span>
                 </div>
-                <span class="font-bold text-xl text-blue-600 dark:text-blue-400">CareerPilot</span>
+                <span class="font-bold text-xl bg-gradient-to-r from-violet-600 to-blue-600 dark:from-violet-400 dark:to-blue-400 bg-clip-text text-transparent">CareerPilot</span>
             </div>
             <button id="close-sidebar-btn" class="md:hidden p-1 rounded-full text-secondary hover:bg-surface-container dark:hover:bg-slate-800">
                 <span class="material-symbols-outlined">close</span>
@@ -130,32 +130,32 @@
         </div>
         <ul class="flex flex-col gap-1 flex-grow">
             <li>
-                <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-blue-600 bg-blue-50/80 dark:bg-blue-950/20 border-l-4 border-blue-600 transition-all duration-200 ease-in-out">
+                <a href="dashboard.html" class="nav-link nav-active flex items-center gap-3 px-4 py-3">
                     <span class="material-symbols-outlined text-label-md" style="font-variation-settings: 'FILL' 1;">dashboard</span>
                     <span class="font-label-md text-label-md">Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="applications.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-slate-100 transition-all duration-200 ease-in-out border-l-4 border-transparent">
+                <a href="applications.html" class="nav-link flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100">
                     <span class="material-symbols-outlined text-label-md">list_alt</span>
                     <span class="font-label-md text-label-md">Applications</span>
                 </a>
             </li>
             <li>
-                <a href="board.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-slate-100 transition-all duration-200 ease-in-out border-l-4 border-transparent">
+                <a href="board.html" class="nav-link flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100">
                     <span class="material-symbols-outlined text-label-md">view_kanban</span>
                     <span class="font-label-md text-label-md">Board</span>
                 </a>
             </li>
             <li>
-                <a href="add-new.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-slate-100 transition-all duration-200 ease-in-out border-l-4 border-transparent">
+                <a href="add-new.html" class="nav-link flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100">
                     <span class="material-symbols-outlined text-label-md">add_circle</span>
                     <span class="font-label-md text-label-md">Add New</span>
                 </a>
             </li>
         </ul>
         <div class="mt-auto">
-            <a href="profile.html" class="flex items-center gap-3 px-4 py-3 rounded-r-xl text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-slate-100 transition-all">
+            <a href="profile.html" class="nav-link flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100">
                 <span class="material-symbols-outlined text-label-md">person</span>
                 <span class="font-label-md text-label-md">Profile</span>
             </a>
@@ -193,54 +193,167 @@
         <!-- Page Container -->
         <div class="p-container-padding flex-1 max-w-7xl mx-auto w-full flex flex-col gap-8 page-fade-in">
             <!-- Greeting Section -->
-            <section class="flex flex-col gap-2">
-                <h2 class="font-headline-xl text-headline-xl text-on-surface dark:text-slate-100">Hello, <span class="profile-name-span">Alex</span>! 👋</h2>
+            <section class="flex flex-col gap-2 stagger-children">
+                <div>
+                    <span class="shimmer-badge">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 pulse-dot"></span>
+                        Pipeline Synchronized
+                    </span>
+                </div>
+                <h2 class="font-headline-xl text-4xl font-extrabold text-on-surface dark:text-slate-100 tracking-tight">Hello, <span class="profile-name-span gradient-text">Alex</span>! 👋</h2>
                 <p class="font-body-md text-body-md text-on-surface-variant dark:text-slate-400">Here is an overview of your internship search progress.</p>
             </section>
             
             <!-- Stats Bento Grid -->
-            <section class="grid grid-cols-1 md:grid-cols-3 gap-card-gap">
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-card-gap stagger-children">
                 <!-- Stat Card 1 -->
-                <div onclick="window.location.href='applications.html'" class="glass-card rounded-2xl p-6 relative overflow-hidden group hover:shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1)] transition-all duration-300 cursor-pointer">
+                <div onclick="window.location.href='applications.html'" class="glass-card glass-card-glow-blue rounded-2xl p-6 relative overflow-hidden group transition-all duration-300 cursor-pointer">
                     <div class="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
-                    <div class="flex flex-col gap-4">
-                        <span class="material-symbols-outlined text-primary dark:text-blue-400" style="font-size: 28px;">work</span>
-                        <div>
-                            <p class="font-label-md text-label-md text-on-surface-variant dark:text-slate-400 mb-1">Total Applications</p>
-                            <div class="flex items-end justify-between">
-                                <h3 class="font-headline-lg text-headline-lg text-on-surface dark:text-slate-100" id="stat-count-total">0</h3>
-                                <span class="font-label-sm text-label-sm text-primary dark:text-blue-400 bg-primary-container/20 px-2 py-1 rounded-md" id="stat-change-total">+0 this week</span>
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex flex-col gap-4 flex-1">
+                            <span class="material-symbols-outlined text-primary dark:text-blue-400" style="font-size: 28px;">work</span>
+                            <div>
+                                <p class="font-label-md text-label-md text-on-surface-variant dark:text-slate-400 mb-1">Total Applications</p>
+                                <div class="flex items-end justify-between pr-2">
+                                    <h3 class="font-headline-lg text-headline-lg text-on-surface dark:text-slate-100" id="stat-count-total">0</h3>
+                                    <span class="font-label-sm text-label-sm text-primary dark:text-blue-400 bg-primary-container/20 px-2 py-1 rounded-md" id="stat-change-total">+0 this week</span>
+                                </div>
                             </div>
+                        </div>
+                        <!-- SVG Progress Ring -->
+                        <div class="relative w-16 h-16 shrink-0 flex items-center justify-center">
+                            <svg class="w-full h-full transform -rotate-90">
+                                <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="4" class="text-slate-100 dark:text-slate-800" fill="transparent" />
+                                <circle id="progress-circle-total" cx="32" cy="32" r="28" stroke="currentColor" stroke-width="4" class="text-blue-600 dark:text-blue-400 circle-progress-ring" fill="transparent" stroke-linecap="round" stroke-dasharray="175.9" stroke-dashoffset="0" />
+                            </svg>
+                            <span class="absolute text-[10px] font-bold text-slate-700 dark:text-slate-300" id="progress-percent-total">100%</span>
                         </div>
                     </div>
                 </div>
                 <!-- Stat Card 2 -->
-                <div onclick="window.location.href='applications.html?status=Interviewing'" class="glass-card rounded-2xl p-6 relative overflow-hidden group hover:shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1)] transition-all duration-300 cursor-pointer">
+                <div onclick="window.location.href='applications.html?status=Interviewing'" class="glass-card glass-card-glow-cyan rounded-2xl p-6 relative overflow-hidden group transition-all duration-300 cursor-pointer">
                     <div class="absolute top-0 right-0 w-24 h-24 bg-tertiary/10 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
-                    <div class="flex flex-col gap-4">
-                        <span class="material-symbols-outlined text-tertiary dark:text-cyan-400" style="font-size: 28px;">event</span>
-                        <div>
-                            <p class="font-label-md text-label-md text-on-surface-variant dark:text-slate-400 mb-1">Interviews Scheduled</p>
-                            <div class="flex items-end justify-between">
-                                <h3 class="font-headline-lg text-headline-lg text-on-surface dark:text-slate-100" id="stat-count-interviews">0</h3>
-                                <span class="font-label-sm text-label-sm text-on-surface-variant dark:text-slate-400" id="stat-change-interviews">Upcoming</span>
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex flex-col gap-4 flex-1">
+                            <span class="material-symbols-outlined text-tertiary dark:text-cyan-400" style="font-size: 28px;">event</span>
+                            <div>
+                                <p class="font-label-md text-label-md text-on-surface-variant dark:text-slate-400 mb-1">Interviews Scheduled</p>
+                                <div class="flex items-end justify-between pr-2">
+                                    <h3 class="font-headline-lg text-headline-lg text-on-surface dark:text-slate-100" id="stat-count-interviews">0</h3>
+                                    <span class="font-label-sm text-label-sm text-on-surface-variant dark:text-slate-400" id="stat-change-interviews">Upcoming</span>
+                                </div>
                             </div>
+                        </div>
+                        <!-- SVG Progress Ring -->
+                        <div class="relative w-16 h-16 shrink-0 flex items-center justify-center">
+                            <svg class="w-full h-full transform -rotate-90">
+                                <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="4" class="text-slate-100 dark:text-slate-800" fill="transparent" />
+                                <circle id="progress-circle-interviews" cx="32" cy="32" r="28" stroke="currentColor" stroke-width="4" class="text-cyan-500 dark:text-cyan-400 circle-progress-ring" fill="transparent" stroke-linecap="round" stroke-dasharray="175.9" stroke-dashoffset="175.9" />
+                            </svg>
+                            <span class="absolute text-[10px] font-bold text-slate-700 dark:text-slate-300" id="progress-percent-interviews">0%</span>
                         </div>
                     </div>
                 </div>
                 <!-- Stat Card 3 -->
-                <div onclick="window.location.href='applications.html?status=Offer'" class="glass-card rounded-2xl p-6 relative overflow-hidden group hover:shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1)] transition-all duration-300 cursor-pointer">
+                <div onclick="window.location.href='applications.html?status=Offer'" class="glass-card glass-card-glow-green rounded-2xl p-6 relative overflow-hidden group transition-all duration-300 cursor-pointer">
                     <div class="absolute top-0 right-0 w-24 h-24 bg-green-500/10 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
-                    <div class="flex flex-col gap-4">
-                        <span class="material-symbols-outlined text-green-600 dark:text-green-400" style="font-size: 28px;">check_circle</span>
-                        <div>
-                            <p class="font-label-md text-label-md text-on-surface-variant dark:text-slate-400 mb-1">Offers Received</p>
-                            <div class="flex items-end justify-between">
-                                <h3 class="font-headline-lg text-headline-lg text-on-surface dark:text-slate-100" id="stat-count-offers">0</h3>
-                                <span class="font-label-sm text-label-sm text-green-700 dark:text-green-400 bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded-md" id="stat-change-offers">Review pending</span>
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex flex-col gap-4 flex-1">
+                            <span class="material-symbols-outlined text-green-600 dark:text-green-400" style="font-size: 28px;">check_circle</span>
+                            <div>
+                                <p class="font-label-md text-label-md text-on-surface-variant dark:text-slate-400 mb-1">Offers Received</p>
+                                <div class="flex items-end justify-between pr-2">
+                                    <h3 class="font-headline-lg text-headline-lg text-on-surface dark:text-slate-100" id="stat-count-offers">0</h3>
+                                    <span class="font-label-sm text-label-sm text-green-700 dark:text-green-400 bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded-md" id="stat-change-offers">Review pending</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SVG Progress Ring -->
+                        <div class="relative w-16 h-16 shrink-0 flex items-center justify-center">
+                            <svg class="w-full h-full transform -rotate-90">
+                                <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="4" class="text-slate-100 dark:text-slate-800" fill="transparent" />
+                                <circle id="progress-circle-offers" cx="32" cy="32" r="28" stroke="currentColor" stroke-width="4" class="text-green-500 dark:text-green-400 circle-progress-ring" fill="transparent" stroke-linecap="round" stroke-dasharray="175.9" stroke-dashoffset="175.9" />
+                            </svg>
+                            <span class="absolute text-[10px] font-bold text-slate-700 dark:text-slate-300" id="progress-percent-offers">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Conversion Funnel Section -->
+            <section class="grid grid-cols-1 lg:grid-cols-3 gap-card-gap">
+                <!-- Left 2 columns: Conversion Funnel -->
+                <div class="lg:col-span-2 glass-card rounded-2xl p-6 flex flex-col gap-4">
+                    <div>
+                        <h4 class="font-headline-md text-headline-md text-on-surface dark:text-slate-100">Application Conversion Funnel</h4>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant dark:text-slate-400">Your funnel efficiency from initial application to final offer.</p>
+                    </div>
+                    
+                    <div class="flex flex-col gap-4 py-2">
+                        <!-- Applied Bar -->
+                        <div class="flex items-center gap-4">
+                            <span class="w-24 text-xs font-bold text-slate-500 dark:text-slate-400">Applied</span>
+                            <div class="flex-1 funnel-bar-wrap h-6 overflow-hidden relative">
+                                <div id="funnel-bar-applied" class="bg-gradient-to-r from-blue-500 to-indigo-500 h-full rounded-full transition-all duration-1000 ease-out flex items-center justify-end px-3" style="width: 0%;">
+                                    <span class="text-[9px] font-bold text-white leading-none" id="funnel-val-applied">0 (100%)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Screening Bar -->
+                        <div class="flex items-center gap-4">
+                            <span class="w-24 text-xs font-bold text-purple-500 dark:text-purple-400">Screening</span>
+                            <div class="flex-1 funnel-bar-wrap h-6 overflow-hidden relative">
+                                <div id="funnel-bar-screening" class="bg-gradient-to-r from-purple-500 to-indigo-600 h-full rounded-full transition-all duration-1000 ease-out flex items-center justify-end px-3" style="width: 0%;">
+                                    <span class="text-[9px] font-bold text-white leading-none" id="funnel-val-screening">0 (0%)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Interviewing Bar -->
+                        <div class="flex items-center gap-4">
+                            <span class="w-24 text-xs font-bold text-amber-500 dark:text-amber-400">Interviewing</span>
+                            <div class="flex-1 funnel-bar-wrap h-6 overflow-hidden relative">
+                                <div id="funnel-bar-interviewing" class="bg-gradient-to-r from-amber-500 to-orange-500 h-full rounded-full transition-all duration-1000 ease-out flex items-center justify-end px-3" style="width: 0%;">
+                                    <span class="text-[9px] font-bold text-white leading-none" id="funnel-val-interviewing">0 (0%)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Offers Bar -->
+                        <div class="flex items-center gap-4">
+                            <span class="w-24 text-xs font-bold text-green-500 dark:text-green-400">Offers</span>
+                            <div class="flex-1 funnel-bar-wrap h-6 overflow-hidden relative">
+                                <div id="funnel-bar-offers" class="bg-gradient-to-r from-green-500 to-emerald-500 h-full rounded-full transition-all duration-1000 ease-out flex items-center justify-end px-3" style="width: 0%;">
+                                    <span class="text-[9px] font-bold text-white leading-none" id="funnel-val-offers">0 (0%)</span>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                
+                <!-- Right 1 column: Summary Metrics Card -->
+                <div class="lg:col-span-1 glass-card rounded-2xl p-6 flex flex-col justify-between gap-4">
+                    <div>
+                        <h4 class="font-headline-md text-headline-md text-on-surface dark:text-slate-100">Weekly Summary</h4>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant dark:text-slate-400 mt-1">A high-level view of your tracking productivity.</p>
+                    </div>
+                    
+                    <div class="bg-slate-100/50 dark:bg-slate-800/50 rounded-xl p-4 flex flex-col gap-3.5 border border-slate-200/30 dark:border-slate-700/40">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-slate-500 dark:text-slate-400 font-semibold">Active Pipeline Rate</span>
+                            <span class="font-bold text-blue-600 dark:text-blue-400" id="summary-active-rate">0%</span>
+                        </div>
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-slate-500 dark:text-slate-400 font-semibold">Rejection Ratio</span>
+                            <span class="font-bold text-red-500" id="summary-rejection-rate">0%</span>
+                        </div>
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-slate-500 dark:text-slate-400 font-semibold">Total Offers</span>
+                            <span class="font-bold text-green-500" id="summary-total-offers">0</span>
+                        </div>
+                    </div>
+                    
+                    <button onclick="window.location.href='add-new.html'" class="w-full py-2.5 btn-primary font-semibold text-xs active:scale-[0.98] shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
+                        <span class="material-symbols-outlined text-[16px]">add_circle</span> Add Opportunity
+                    </button>
                 </div>
             </section>
             
@@ -252,11 +365,11 @@
                         View All <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
                     </button>
                 </div>
-                <div class="bg-surface-container-lowest dark:bg-slate-800 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05)] overflow-hidden border border-surface-variant dark:border-slate-700">
+                <div class="data-table">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             <thead>
-                                <tr class="border-b border-surface-variant dark:border-slate-700 bg-surface-bright dark:bg-slate-800/50">
+                                <tr>
                                     <th class="px-gutter py-3 font-label-md text-label-md text-on-surface-variant dark:text-slate-300 font-medium">Company</th>
                                     <th class="px-gutter py-3 font-label-md text-label-md text-on-surface-variant dark:text-slate-300 font-medium">Role</th>
                                     <th class="px-gutter py-3 font-label-md text-label-md text-on-surface-variant dark:text-slate-300 font-medium">Date Applied</th>
@@ -404,7 +517,7 @@
                     const statusBadge = getStatusBadgeClass(app.status);
                     
                     const tr = document.createElement("tr");
-                    tr.className = "border-b border-surface-variant dark:border-slate-800 hover:bg-surface-container-low dark:hover:bg-slate-800/40 transition-colors group cursor-pointer";
+                    tr.className = "border-b border-surface-variant dark:border-slate-800/60 hover-row transition-colors group cursor-pointer";
                     tr.dataset.id = app.id;
                     
                     tr.innerHTML = `
@@ -419,7 +532,7 @@
                         <td class="px-gutter py-4 text-on-surface-variant dark:text-slate-300 font-medium">${app.role}</td>
                         <td class="px-gutter py-4 text-on-surface-variant dark:text-slate-400">${formatDate(app.date)}</td>
                         <td class="px-gutter py-4">
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-label-sm font-semibold ${statusBadge}">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold ${statusBadge}">
                                 ${app.status}
                             </span>
                         </td>

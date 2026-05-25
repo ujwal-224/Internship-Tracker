@@ -142,19 +142,20 @@ function getCompanyAvatarConfig(companyName) {
 function getStatusBadgeClass(status) {
     switch (status) {
         case 'Applied':
-            return 'bg-[#dbeafe] text-[#2563eb] border border-[#bfdbfe]/50';
+            return 'badge-applied';
         case 'Online Assessment':
-            return 'bg-purple-100 text-purple-700 border border-purple-200/50';
+        case 'Screening':
+            return 'badge-screening';
         case 'Interviewing':
         case 'Interview':
-            return 'bg-[#fef3c7] text-[#d97706] border border-[#fde68a]/50';
+            return 'badge-interviewing';
         case 'Offer':
         case 'Selected':
-            return 'bg-[#d1fae5] text-[#059669] border border-[#a7f3d0]/50';
+            return 'badge-offer';
         case 'Rejected':
-            return 'bg-[#fee2e2] text-[#dc2626] border border-[#fca5a5]/50';
+            return 'badge-rejected';
         default:
-            return 'bg-gray-100 text-gray-600 border border-gray-200';
+            return 'bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-slate-300 border border-gray-200 dark:border-slate-700';
     }
 }
 
@@ -165,39 +166,86 @@ function showToast(message, type = "success") {
     if (!container) {
         container = document.createElement("div");
         container.id = "toast-container";
-        container.className = "fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none";
+        container.className = "fixed top-6 right-6 z-50 flex flex-col gap-3 pointer-events-none";
         document.body.appendChild(container);
     }
 
     const toast = document.createElement("div");
-    toast.className = "flex items-center gap-2.5 px-4 py-3 bg-slate-900/90 dark:bg-slate-100/90 text-white dark:text-slate-900 shadow-lg rounded-xl text-xs font-semibold border border-white/10 dark:border-slate-800/10 pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0";
+    // Premium slide-in from right animation class setup
+    toast.className = "flex items-center gap-2.5 px-4.5 py-3.5 bg-slate-900/95 dark:bg-white text-white dark:text-slate-900 shadow-xl rounded-2xl text-xs font-semibold border border-white/10 dark:border-slate-200/10 pointer-events-auto transition-all duration-300 transform translate-x-12 opacity-0";
     
     let icon = "check_circle";
+    let accentClass = "text-green-400 dark:text-green-600";
+    
     if (type === "error") {
         icon = "error";
-        toast.classList.add("border-l-4", "border-l-error");
+        accentClass = "text-red-400 dark:text-red-600";
+        toast.classList.add("border-l-4", "border-l-red-500");
     } else if (type === "info") {
         icon = "info";
+        accentClass = "text-blue-400 dark:text-blue-600";
+        toast.classList.add("border-l-4", "border-l-blue-500");
+    } else {
+        toast.classList.add("border-l-4", "border-l-green-500");
     }
     
     toast.innerHTML = `
-        <span class="material-symbols-outlined text-[18px]">${icon}</span>
-        <span>${message}</span>
+        <span class="material-symbols-outlined text-[18px] ${accentClass}">${icon}</span>
+        <span class="pr-2">${message}</span>
     `;
     
     container.appendChild(toast);
     
-    // Trigger animation
+    // Trigger slide-in animation
     setTimeout(() => {
-        toast.classList.remove("translate-y-2", "opacity-0");
+        toast.classList.remove("translate-x-12", "opacity-0");
     }, 10);
     
-    // Remove after 3 seconds
+    // Remove after 3.2 seconds
     setTimeout(() => {
-        toast.classList.add("translate-y-2", "opacity-0");
+        toast.classList.add("translate-x-12", "opacity-0");
         setTimeout(() => toast.remove(), 300);
-    }, 3000);
+    }, 3200);
 }
+
+// --- MILESTONE JOURNEY LOGIC ---
+function getAppMilestones(app) {
+    if (app.milestones && Array.isArray(app.milestones) && app.milestones.length > 0) {
+        return app.milestones;
+    }
+    
+    // Fallback: Generate dynamically based on status to ensure seamless backward compatibility
+    const statusMap = { "Applied": 0, "Screening": 1, "Interviewing": 2, "Offer": 3 };
+    const currentIdx = statusMap[app.status] !== undefined ? statusMap[app.status] : 0;
+    
+    const milestones = [
+        { key: "Applied", label: "Application Submitted", completed: true, date: app.date, notes: "Successfully applied online via company portal." },
+        { key: "Screening", label: "Online Assessment", completed: currentIdx >= 1, date: currentIdx >= 1 ? app.date : "", notes: "Completed initial evaluation stage." },
+        { key: "Interviewing", label: "Technical Interview", completed: currentIdx >= 2, date: currentIdx >= 2 ? app.date : "", notes: "Completed coding session with engineering team." },
+        { key: "Offer", label: "Offer Received", completed: currentIdx >= 3, date: currentIdx >= 3 ? app.date : "", notes: "Final offer details and salary negotiation." }
+    ];
+    
+    if (app.status === "Rejected") {
+        // Adjust for rejection
+        milestones.forEach((m, idx) => {
+            if (idx > currentIdx) m.completed = false;
+        });
+        // Append rejection step as the active state
+        milestones.unshift({ key: "Rejected", label: "Application Declined", completed: true, date: app.date, notes: app.notes || "Recruiter declined application." });
+    }
+    
+    return milestones;
+}
+
+function saveAppMilestones(appId, milestones) {
+    const apps = getApplications();
+    const idx = apps.findIndex(a => a.id === appId);
+    if (idx !== -1) {
+        apps[idx].milestones = milestones;
+        saveApplications(apps);
+    }
+}
+
 
 // --- UI SETUP & SHARED LISTENERS ---
 document.addEventListener("DOMContentLoaded", () => {
