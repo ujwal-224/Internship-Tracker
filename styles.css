@@ -1,0 +1,87 @@
+/* Reusable stylesheet for CareerPilot application */
+
+/* Base overrides */
+body {
+    background-color: #F8FAFC;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Glassmorphic cards styling */
+.glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Dark mode extensions */
+.dark body {
+    background-color: #0f172a !important;
+    color: #f1f5f9;
+}
+
+.dark .glass-card {
+    background: rgba(30, 41, 59, 0.7);
+    border-color: rgba(71, 85, 105, 0.4);
+}
+
+.dark .bg-surface {
+    background-color: #0f172a !important;
+}
+
+.dark .bg-surface-container-lowest {
+    background-color: #1e293b !important;
+}
+
+.dark .bg-surface-container-low {
+    background-color: #1e293b/60 !important;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #475569;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Animations and transitions */
+.page-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hover effects for interactive lists */
+.hover-row:hover {
+    background-color: rgba(241, 245, 249, 0.6);
+}
+
+.dark .hover-row:hover {
+    background-color: rgba(51, 65, 85, 0.4);
+}
