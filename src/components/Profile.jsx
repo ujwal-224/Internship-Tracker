@@ -60,7 +60,8 @@ function Profile({ profile, onUpdateProfile, showToast }) {
   };
 
   return (
-    <div className="p-8 flex-1 max-w-6xl w-full mx-auto flex flex-col gap-6 page-fade-in relative z-10 text-on-surface dark:text-slate-100">
+    <>
+      <div className="p-8 flex-1 max-w-6xl w-full mx-auto flex flex-col gap-6 page-fade-in relative z-10 text-on-surface dark:text-slate-100">
       <div className="flex flex-col gap-1 mb-2">
         <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100">My Profile</h2>
         <p className="text-slate-500 dark:text-slate-400">Manage your personal information, resume, and account settings.</p>
@@ -297,6 +298,8 @@ function Profile({ profile, onUpdateProfile, showToast }) {
         </div>
       </div>
 
+      </div>
+
       {/* Edit Profile Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -390,7 +393,7 @@ function Profile({ profile, onUpdateProfile, showToast }) {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

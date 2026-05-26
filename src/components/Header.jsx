@@ -28,7 +28,7 @@ function Header({
   };
 
   return (
-    <header className="w-full sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm flex items-center justify-between px-8 h-16 border-b border-slate-100 dark:border-slate-800">
+    <header className="w-full relative z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm flex items-center justify-between px-8 h-20 border-b border-slate-100 dark:border-slate-800">
       <div className="flex items-center gap-4 flex-1">
         {/* Mobile Menu Button */}
         <button 
@@ -67,28 +67,30 @@ function Header({
         <button 
           id="theme-toggle" 
           onClick={toggleTheme}
-          className="p-2 rounded-full text-slate-500 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" 
+          className="w-10 h-10 flex items-center justify-center rounded-full text-slate-500 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" 
           title="Toggle Dark/Light Mode"
         >
           <span className="material-symbols-outlined" id="theme-icon">
             {isDark ? 'light_mode' : 'dark_mode'}
           </span>
         </button>
-        <button className="p-2 rounded-full text-slate-500 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all relative">
+        <button className="w-10 h-10 flex items-center justify-center rounded-full text-slate-500 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all relative">
           <span className="material-symbols-outlined">notifications</span>
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white dark:ring-slate-900"></span>
+          <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white dark:ring-slate-900"></span>
         </button>
         <a 
           href="#/profile"
-          className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm overflow-hidden cursor-pointer hover:ring-2 hover:ring-violet-500 dark:hover:ring-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-500 dark:focus:ring-violet-400 transition-all"
+          className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
           title="View Profile"
         >
-          <img 
-            id="header-avatar" 
-            className="w-full h-full object-cover" 
-            src={profile?.avatar || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150"} 
-            alt="Avatar"
-          />
+          <div className="w-6 h-6 rounded-full overflow-hidden bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-[10px]">
+            <img 
+              id="header-avatar" 
+              className="w-full h-full object-cover" 
+              src={profile?.avatar || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150"} 
+              alt="Avatar"
+            />
+          </div>
         </a>
       </div>
     </header>
