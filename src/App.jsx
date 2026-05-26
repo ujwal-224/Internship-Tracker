@@ -167,19 +167,24 @@ function App() {
 
       {/* Main Content Area */}
       <main className="flex-1 md:ml-sidebar-width h-full overflow-y-auto bg-slate-50/50 dark:bg-slate-950/50 flex flex-col relative">
-        {/* Header displays on all pages except Add New Application page */}
-        {route.page !== 'add-new' && (
-          <Header 
-            onMenuClick={() => setIsSidebarOpen(true)}
-            profile={profile}
-            isDark={isDark}
-            setIsDark={setIsDark}
-            showToast={showToast}
-            title={route.page === 'profile' ? 'My Profile' : undefined}
-            searchQuery={searchQuery}
-            onSearchChange={route.page === 'applications' ? setSearchQuery : undefined}
-          />
-        )}
+        {/* Header displays on all pages */}
+        <Header 
+          onMenuClick={() => setIsSidebarOpen(true)}
+          profile={profile}
+          isDark={isDark}
+          setIsDark={setIsDark}
+          showToast={showToast}
+          title={
+            route.page === 'profile' 
+              ? 'My Profile' 
+              : route.page === 'add-new' 
+                ? 'New Application' 
+                : undefined
+          }
+          hideSearch={route.page === 'dashboard'}
+          searchQuery={searchQuery}
+          onSearchChange={route.page === 'applications' ? setSearchQuery : undefined}
+        />
 
         {/* Dynamic Page Views */}
         {route.page === 'dashboard' && (

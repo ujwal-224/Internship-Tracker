@@ -143,33 +143,44 @@ header {
   backdrop-filter: blur(20px) saturate(180%) !important;
   border-bottom: 1px solid rgba(124,58,237,.10) !important;
   box-shadow: 0 1px 30px rgba(124,58,237,.06) !important;
+  margin-top: 10px !important;
+  border-radius: 0 0 0 0 !important;
 }
 .dark header {
-  background: rgba(8,11,26,.85) !important;
-  border-bottom: 1px solid rgba(124,58,237,.18) !important;
-  box-shadow: 0 1px 30px rgba(0,0,0,.3) !important;
+  background: rgba(8,11,26,.92) !important;
+  border-bottom: 1px solid rgba(124,58,237,.22) !important;
+  box-shadow: 0 2px 32px rgba(0,0,0,.45) !important;
 }
 
 /* Search bar */
 #global-search {
-  background: rgba(124,58,237,.05) !important;
-  border: 1.5px solid rgba(124,58,237,.15) !important;
+  background: rgba(255,255,255,.90) !important;
+  border: 1.5px solid rgba(124,58,237,.20) !important;
   border-radius: 12px !important;
+  color: #1e1b4b !important;
   transition: all .25s !important;
 }
+#global-search::placeholder {
+  color: #94a3b8 !important;
+}
 #global-search:focus {
-  background: rgba(255,255,255,.9) !important;
+  background: #ffffff !important;
   border-color: var(--brand-violet) !important;
   box-shadow: 0 0 0 3px rgba(124,58,237,.15) !important;
+  outline: none !important;
 }
 .dark #global-search {
-  background: rgba(124,58,237,.08) !important;
-  border-color: rgba(124,58,237,.25) !important;
+  background: rgba(30,35,75,.85) !important;
+  border: 1.5px solid rgba(124,58,237,.40) !important;
   color: #e2e8f0 !important;
 }
+.dark #global-search::placeholder {
+  color: #64748b !important;
+}
 .dark #global-search:focus {
-  background: rgba(15,20,55,.9) !important;
+  background: rgba(20,25,60,.95) !important;
   border-color: #7c3aed !important;
+  box-shadow: 0 0 0 3px rgba(124,58,237,.22) !important;
 }
 
 /* Icon button hover */
@@ -479,6 +490,14 @@ main { position: relative; z-index: 1; }
 /* ── Form inputs ── */
 input, select, textarea {
   font-family: inherit;
+}
+select option {
+  background-color: #ffffff !important;
+  color: #1e1b4b !important;
+}
+.dark select option {
+  background-color: #0d1130 !important;
+  color: #e2e8f0 !important;
 }
 .input-field {
   background: rgba(124,58,237,.04) !important;
