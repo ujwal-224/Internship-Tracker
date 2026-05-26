@@ -2,10 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <meta http-equiv="refresh" content="0; url=dashboard.html" />
-    <title>CareerPilot</title>
+    <title>CareerPilot - Launching...</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        
+        .animate-pulse-ring {
+            animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
 </head>
-<body>
-    <p>Redirecting to your <a href="dashboard.html">Dashboard</a>...</p>
+<body class="bg-slate-950 h-screen w-screen flex flex-col items-center justify-center m-0 overflow-hidden text-slate-100 relative">
+    
+    <!-- Ambient Background Glow -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-violet-600/20 rounded-full blur-[100px] pointer-events-none"></div>
+
+    <div class="glass-panel p-10 rounded-3xl flex flex-col items-center justify-center shadow-2xl relative z-10 w-80">
+        <!-- Logo Container with Pulse -->
+        <div class="relative flex items-center justify-center mb-6">
+            <div class="absolute inset-0 rounded-xl bg-violet-500 animate-pulse-ring"></div>
+            <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-violet-600 to-blue-600 flex items-center justify-center shadow-lg shadow-violet-500/40 relative z-10">
+                <svg class="w-8 h-8 text-white translate-x-px translate-y-px" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                </svg>
+            </div>
+        </div>
+        
+        <h1 class="text-2xl font-extrabold bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent mb-2 tracking-tight">CareerPilot</h1>
+        
+        <!-- Loading Bar -->
+        <div class="w-full bg-slate-800 rounded-full h-1.5 mt-4 overflow-hidden relative">
+            <div class="bg-gradient-to-r from-violet-500 to-blue-500 h-1.5 rounded-full absolute left-0 top-0 w-1/2 animate-[pulse_1s_ease-in-out_infinite]" style="animation: loadingBar 0.8s ease-out forwards;"></div>
+        </div>
+        <p class="text-slate-400 mt-4 text-xs font-semibold tracking-wider uppercase">Initializing Workspace...</p>
+    </div>
+
+    <!-- JS Redirect -->
+    <script>
+        // Simple loading bar animation simulation before redirecting
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes loadingBar {
+                0% { width: 0%; }
+                100% { width: 100%; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Smooth transition to dashboard
+        setTimeout(() => {
+            window.location.replace("dashboard.html");
+        }, 900);
+    </script>
 </body>
 </html>
