@@ -9,6 +9,7 @@ function Applications({
   applications, 
   selectedAppId, 
   searchQuery, 
+  onSearchChange,
   onUpdateStatus, 
   onDelete, 
   onSaveNotes, 
@@ -16,6 +17,7 @@ function Applications({
 }) {
   const [filter, setFilter] = useState('all');
   const [notes, setNotes] = useState('');
+  const [deleteConfirm, setDeleteConfirm] = useState({ isOpen: false, appId: null, companyName: '', isFromDetails: false });
 
   // Find active application if selectedAppId is provided
   const activeApp = applications.find(a => a.id === selectedAppId);
@@ -41,17 +43,24 @@ function Applications({
   };
 
   const handleDeleteDetails = () => {
-    if (activeApp && window.confirm("Are you sure you want to delete this application?")) {
-      onDelete(activeApp.id);
-      window.location.hash = '#/applications';
+    if (activeApp) {
+      setDeleteConfirm({
+        isOpen: true,
+        appId: activeApp.id,
+        companyName: activeApp.company,
+        isFromDetails: true
+      });
     }
   };
 
   const handleDeleteList = (appId, companyName, e) => {
     e.stopPropagation();
-    if (window.confirm(`Are you sure you want to delete your application for ${companyName}?`)) {
-      onDelete(appId);
-    }
+    setDeleteConfirm({
+      isOpen: true,
+      appId,
+      companyName,
+      isFromDetails: false
+    });
   };
 
   const selectApp = (appId) => {
@@ -132,17 +141,22 @@ function Applications({
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <select 
-                    value={activeApp.status} 
-                    onChange={handleStatusChange}
-                    className={`px-4 py-1.5 text-xs font-semibold rounded-full border-none cursor-pointer focus:ring-1 focus:ring-violet-500 font-body-sm bg-slate-100 dark:bg-slate-800 ${getStatusBadgeClass(activeApp.status)}`}
-                  >
-                    <option value="Applied">Applied</option>
-                    <option value="Screening">Online Assessment</option>
-                    <option value="Interviewing">Interview</option>
-                    <option value="Offer">Selected</option>
-                    <option value="Rejected">Rejected</option>
-                  </select>
+                  <div className="relative inline-flex items-center">
+                    <select 
+                      value={activeApp.status} 
+                      onChange={handleStatusChange}
+                      className={`pl-4 pr-8 py-1.5 text-xs font-semibold rounded-full border-none cursor-pointer focus:ring-1 focus:ring-violet-500 font-body-sm bg-slate-100 dark:bg-slate-800 appearance-none ${getStatusBadgeClass(activeApp.status)}`}
+                    >
+                      <option value="Applied">Applied</option>
+                      <option value="Screening">Online Assessment</option>
+                      <option value="Interviewing">Interview</option>
+                      <option value="Offer">Selected</option>
+                      <option value="Rejected">Rejected</option>
+                    </select>
+                    <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-[14px] opacity-80 font-bold">
+                      expand_more
+                    </span>
+                  </div>
                   <button 
                     onClick={handleDeleteDetails}
                     className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg transition-colors" 
@@ -178,12 +192,27 @@ function Applications({
                     >
                       View Posting <span className="material-symbols-outlined text-[14px]">open_in_new</span>
                     </a>
+                  ) : activeApp.description ? (
+                    <span className="text-sm font-semibold text-slate-500 mt-1">See text below</span>
                   ) : (
                     <span className="text-sm font-semibold text-slate-400 mt-1">-</span>
                   )}
                 </div>
               </div>
             </div>
+
+            {/* Job Description card */}
+            {activeApp.description && (
+              <div className="glass-card rounded-2xl p-6 flex flex-col gap-3">
+                <div>
+                  <h4 className="text-lg font-bold text-slate-900 dark:text-slate-100">Job Description</h4>
+                  <p className="text-slate-500 dark:text-slate-400 text-sm mt-0.5 font-medium">Core expectations and requirements from the company.</p>
+                </div>
+                <div className="text-sm font-normal text-slate-700 dark:text-slate-350 p-4 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-100 dark:border-slate-800/80 whitespace-pre-line">
+                  {activeApp.description}
+                </div>
+              </div>
+            )}
 
             {/* Timeline component */}
             <div className="glass-card rounded-2xl p-6 flex flex-col gap-6">
@@ -259,11 +288,15 @@ function Applications({
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-3 text-slate-600 dark:text-slate-400">
                   <span className="material-symbols-outlined text-[18px] text-slate-400">mail</span>
-                  <span className="text-sm truncate font-medium">hr@{activeApp.company.toLowerCase()}.com</span>
+                  <span className="text-sm truncate font-medium">
+                    {activeApp.recruiterEmail || `hr@${activeApp.company.toLowerCase().replace(/\s+/g, '')}.com`}
+                  </span>
                 </div>
                 <div className="flex items-center gap-3 text-slate-600 dark:text-slate-400">
                   <span className="material-symbols-outlined text-[18px] text-slate-400">phone</span>
-                  <span className="text-sm font-medium">+1 (555) 019-2834</span>
+                  <span className="text-sm font-medium">
+                    {activeApp.recruiterPhone || "Not specified"}
+                  </span>
                 </div>
               </div>
             </div>
@@ -289,6 +322,40 @@ function Applications({
             </div>
           </div>
         </div>
+
+        {deleteConfirm.isOpen && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-all duration-200">
+            <div className="glass-card rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-rose-500/20 dark:border-rose-500/30 bg-white/95 dark:bg-slate-900/95 text-on-surface dark:text-slate-100 flex flex-col gap-5 max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center gap-3 text-rose-500">
+                <span className="material-symbols-outlined text-3xl">warning</span>
+                <h3 className="text-lg font-bold">Delete Application</h3>
+              </div>
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
+                Are you sure you want to delete your application for <span className="font-bold text-slate-900 dark:text-slate-100">{deleteConfirm.companyName}</span>? This action cannot be undone.
+              </p>
+              <div className="flex justify-end gap-3 pt-2">
+                <button 
+                  onClick={() => setDeleteConfirm({ isOpen: false, appId: null, companyName: '', isFromDetails: false })}
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={() => {
+                    onDelete(deleteConfirm.appId);
+                    if (deleteConfirm.isFromDetails) {
+                      window.location.hash = '#/applications';
+                    }
+                    setDeleteConfirm({ isOpen: false, appId: null, companyName: '', isFromDetails: false });
+                  }}
+                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-semibold transition-colors shadow-sm cursor-pointer"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -300,6 +367,17 @@ function Applications({
         <div>
           <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100">All Applications</h2>
           <p className="text-slate-500 dark:text-slate-400">Track and manage your application journey stages.</p>
+          <div className="relative w-full max-w-md mt-4">
+            <span className="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400">search</span>
+            <input 
+              id="apps-search" 
+              className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-blue-500 font-body-sm text-body-sm transition-colors shadow-sm" 
+              placeholder="Search companies, roles..." 
+              type="text"
+              value={searchQuery || ''}
+              onChange={(e) => onSearchChange && onSearchChange(e.target.value)}
+            />
+          </div>
         </div>
         <button 
           onClick={() => { window.location.hash = '#/add-new'; }} 
@@ -386,7 +464,7 @@ function Applications({
                       </td>
                       <td className="px-6 py-4 text-slate-600 dark:text-slate-300 font-medium">{app.salary || "-"}</td>
                       <td className="px-6 py-4 text-right">
-                        <div className="flex items-center justify-end gap-1.5 md:opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="flex items-center justify-end gap-1.5">
                           <button 
                             onClick={(e) => {
                               e.stopPropagation();
@@ -414,6 +492,40 @@ function Applications({
           </table>
         </div>
       </div>
+
+      {deleteConfirm.isOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-all duration-200">
+          <div className="glass-card rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-rose-500/20 dark:border-rose-500/30 bg-white/95 dark:bg-slate-900/95 text-on-surface dark:text-slate-100 flex flex-col gap-5 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center gap-3 text-rose-500">
+              <span className="material-symbols-outlined text-3xl">warning</span>
+              <h3 className="text-lg font-bold">Delete Application</h3>
+            </div>
+            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
+              Are you sure you want to delete your application for <span className="font-bold text-slate-900 dark:text-slate-100">{deleteConfirm.companyName}</span>? This action cannot be undone.
+            </p>
+            <div className="flex justify-end gap-3 pt-2">
+              <button 
+                onClick={() => setDeleteConfirm({ isOpen: false, appId: null, companyName: '', isFromDetails: false })}
+                className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={() => {
+                  onDelete(deleteConfirm.appId);
+                  if (deleteConfirm.isFromDetails) {
+                    window.location.hash = '#/applications';
+                  }
+                  setDeleteConfirm({ isOpen: false, appId: null, companyName: '', isFromDetails: false });
+                }}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-semibold transition-colors shadow-sm cursor-pointer"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

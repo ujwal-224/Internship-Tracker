@@ -10,6 +10,7 @@ function Board({ applications, onUpdateStatus, onDelete, showToast }) {
   const [selectedAppId, setSelectedAppId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [draggedOverCol, setDraggedOverCol] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const columns = [
     { key: 'Applied', title: 'Applied', colorClass: 'bg-violet-500' },
@@ -62,16 +63,36 @@ function Board({ applications, onUpdateStatus, onDelete, showToast }) {
   };
 
   return (
-    <div className="p-8 flex-1 max-w-6xl w-full mx-auto flex flex-col gap-6 page-fade-in relative z-10 text-on-surface dark:text-slate-100">
+    <>
+      <div className="p-8 flex-1 max-w-6xl w-full mx-auto flex flex-col gap-6 page-fade-in relative z-10 text-on-surface dark:text-slate-100">
       <div className="flex flex-col gap-1 mb-2">
         <h2 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100">Kanban Board</h2>
         <p className="text-slate-500 dark:text-slate-400">Drag and drop applications between columns to update their stage.</p>
+        <div className="relative w-full max-w-md mt-4">
+          <span className="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400">search</span>
+          <input 
+            id="board-search" 
+            className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-blue-500 font-body-sm text-body-sm transition-colors shadow-sm" 
+            placeholder="Search companies, roles..." 
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
       </div>
 
       {/* Board Columns Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 flex-1 min-h-[500px]">
         {columns.map((col) => {
-          const colApps = applications.filter(app => {
+          const filteredApps = applications.filter(app => {
+            const query = searchQuery ? searchQuery.toLowerCase().trim() : '';
+            return !query || 
+              app.company.toLowerCase().includes(query) ||
+              app.role.toLowerCase().includes(query) ||
+              (app.location && app.location.toLowerCase().includes(query));
+          });
+
+          const colApps = filteredApps.filter(app => {
             if (col.key === 'Screening') {
               return app.status === 'Screening' || app.status === 'Online Assessment';
             }
@@ -108,7 +129,7 @@ function Board({ applications, onUpdateStatus, onDelete, showToast }) {
               </div>
 
               {/* Cards Container */}
-              <div className="flex flex-col gap-3 flex-grow overflow-y-auto">
+              <div className="flex flex-col gap-3 flex-grow overflow-y-auto pt-2 pb-2 px-1">
                 {colApps.map((app) => {
                   const avatarConfig = getCompanyAvatarConfig(app.company);
                   return (
@@ -161,6 +182,8 @@ function Board({ applications, onUpdateStatus, onDelete, showToast }) {
         })}
       </div>
 
+      </div>
+
       {/* Details Modal */}
       <DetailsModal 
         isOpen={isModalOpen}
@@ -170,7 +193,7 @@ function Board({ applications, onUpdateStatus, onDelete, showToast }) {
         onUpdateStatus={onUpdateStatus}
         onDelete={onDelete}
       />
-    </div>
+    </>
   );
 }
 
