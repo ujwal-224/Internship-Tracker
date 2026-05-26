@@ -1,24 +1,34 @@
-# CareerPilot (Internship Tracker) 🚀
+# CareerPilot (Internship Tracker) 
 
 CareerPilot is a modern, premium SaaS platform designed to help students and job seekers track their internship and job applications with a highly polished, interactive user interface. Built with a stunning cosmic-inspired dark/glassmorphic aesthetic, the application provides a centralized hub to monitor application statuses, manage interviews, and track personal career growth.
 
 ---
 
-## ✨ Features
+##  Features
 
-* **📊 Comprehensive Dashboard:** Get a bird's-eye view of your application funnel, recent activity, and key performance metrics via an intuitive Bento-grid layout.
-* **📋 Application Management:** Detailed list and card views with advanced filtering, timeline milestones, and interview notes for every opportunity.
-* **🗂️ Interactive Pipeline Board:** Visual drag-and-drop Kanban board to manage applications across various stages (Applied, Screening, Interviewing, Offer).
-* **✨ Premium User Experience:** 
+* **Comprehensive Dashboard:** Get a bird's-eye view of your application funnel, recent activity, and key performance metrics via an intuitive Bento-grid layout.
+* **Application Management:** Detailed list and card views with advanced filtering, timeline milestones, and interview notes for every opportunity.
+* **Interactive Pipeline Board:** Visual drag-and-drop Kanban board to manage applications across various stages (Applied, Screening, Interviewing, Offer).
+* **Premium User Experience:** 
   * Beautiful glassmorphism UI with vibrant gradient accents.
   * Micro-animations and seamless transitions across all modules.
   * Fully responsive design optimized for all screen sizes.
-* **👤 Profile & Settings:** Manage your resume versions, skillsets, and notification preferences in a dedicated portal.
-* **💾 Local Storage Integration:** Fully functional client-side application that securely stores your data in your browser's local storage. No backend required!
+* **Profile & Settings:** Manage your resume versions, skillsets, and notification preferences in a dedicated portal.
+* **Local Storage Integration:** Fully functional client-side application that securely stores your data in your browser's local storage. No backend required!
 
 ---
 
-## 🛠️ Technology Stack
+## Problem Statement
+
+Students often struggle to manage multiple internship applications across different platforms.
+
+* **CareerPilot solves this by:**
+    * Centralizing all applications
+    * Tracking progress visually
+    * Organizing interview updates
+    * Managing notes and deadlines efficiently
+
+## Technology Stack
 
 * **Core Framework:** React 18+ (Vite)
 * **Styling Framework:** Tailwind CSS & Vanilla CSS (variables, layout tokens)
@@ -27,7 +37,7 @@ CareerPilot is a modern, premium SaaS platform designed to help students and job
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 To run CareerPilot locally on your machine, follow these steps:
 
@@ -55,7 +65,7 @@ npm run build
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 All application source code resides in the root workspace directory:
 
@@ -74,13 +84,43 @@ All application source code resides in the root workspace directory:
 * `src/index.css` - Custom glassmorphic styles, color tokens, and preloader animations.
 
 ---
+ ## UI Theme
+* Modern Light Theme
+* Blue SaaS-inspired dashboard
+* Clean and minimal design
+* User-friendly interface
+* Responsive layout
 
-## 🤝 Contributing
+## Future Enhancements
+* Authentication & Authorization
+* Resume Uploads
+* Email Notifications
+* Analytics Dashboard
+* Interview Reminders
+* AI-based Resume Suggestions
+
+## Team Members
+* Ujwal 
+* Anshitha 
+* Bhavya 
+* Yaswantta 
+
+ ## Project Status
+Currently under active development.
+
+* **The project is being developed using a frontend-first workflow:**
+    * Wireframes & UI Design
+    * Frontend Development
+    * Backend Integration
+    * Database Connectivity
+    * Deployment & Testing
+
+##  Contributing
 
 Contributions, issues, and feature requests are welcome! Feel free to check the issues page if you want to contribute.
 
 ---
 
-## 📝 License
+##  License
 
 This project is open-source and available under the [MIT License](LICENSE).
