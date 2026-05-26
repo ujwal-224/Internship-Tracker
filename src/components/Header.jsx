@@ -8,7 +8,8 @@ function Header({
   showToast,
   title, // Optional title, displays search bar if undefined
   searchQuery,
-  onSearchChange
+  onSearchChange,
+  hideSearch
 }) {
   const [localSearch, setLocalSearch] = useState(searchQuery || '');
 
@@ -40,7 +41,7 @@ function Header({
 
         {title ? (
           <div className="text-xl font-bold text-slate-900 dark:text-slate-100">{title}</div>
-        ) : (
+        ) : hideSearch ? null : (
           <div className="relative w-full max-w-md">
             <span className="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400">search</span>
             <input 
@@ -77,14 +78,18 @@ function Header({
           <span className="material-symbols-outlined">notifications</span>
           <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white dark:ring-slate-900"></span>
         </button>
-        <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm overflow-hidden">
+        <a 
+          href="#/profile"
+          className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm overflow-hidden cursor-pointer hover:ring-2 hover:ring-violet-500 dark:hover:ring-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-500 dark:focus:ring-violet-400 transition-all"
+          title="View Profile"
+        >
           <img 
             id="header-avatar" 
             className="w-full h-full object-cover" 
             src={profile?.avatar || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150"} 
             alt="Avatar"
           />
-        </div>
+        </a>
       </div>
     </header>
   );
