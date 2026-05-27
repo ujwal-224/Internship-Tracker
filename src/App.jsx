@@ -55,11 +55,11 @@ function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [toasts, setToasts] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return localStorage.getItem("careerpilot_auth") === "true";
+    return localStorage.getItem("internflow_auth") === "true";
   });
 
   const [profile, setProfile] = useState(() => {
-    return JSON.parse(localStorage.getItem("careerpilot_profile")) || {
+    return JSON.parse(localStorage.getItem("internflow_profile")) || {
       name: "Sarah Jenkins",
       role: "UX Design Intern Candidate",
       email: "sarah.j@example.com",
@@ -70,7 +70,7 @@ function App() {
   });
 
   const [isDark, setIsDark] = useState(() => {
-    return localStorage.getItem("careerpilot_dark") === "true";
+    return localStorage.getItem("internflow_dark") === "true";
   });
 
   // Theme effect
@@ -80,7 +80,7 @@ function App() {
     } else {
       document.documentElement.classList.remove("dark");
     }
-    localStorage.setItem("careerpilot_dark", isDark ? "true" : "false");
+    localStorage.setItem("internflow_dark", isDark ? "true" : "false");
   }, [isDark]);
 
   // Sync hash changes
@@ -151,11 +151,11 @@ function App() {
 
   const updateProfile = (updatedProfile) => {
     setProfile(updatedProfile);
-    localStorage.setItem("careerpilot_profile", JSON.stringify(updatedProfile));
+    localStorage.setItem("internflow_profile", JSON.stringify(updatedProfile));
   };
 
   const handleSignOut = () => {
-    localStorage.removeItem("careerpilot_auth");
+    localStorage.removeItem("internflow_auth");
     setIsAuthenticated(false);
     window.location.hash = '#/';
     showToast("Signed out successfully", "info");
@@ -172,7 +172,7 @@ function App() {
       {!isAuthenticated ? (
         <Auth onAuthSuccess={() => {
           setIsAuthenticated(true);
-          localStorage.setItem("careerpilot_auth", "true");
+          localStorage.setItem("internflow_auth", "true");
           showToast("Successfully logged in!", "success");
         }} />
       ) : (
