@@ -101,7 +101,8 @@ function Dashboard({ applications, profile, onUpdateStatus, onDelete, showToast 
   const firstName = (profile?.name || "Sarah").split(" ")[0];
 
   return (
-    <div className="p-8 flex-1 max-w-6xl w-full mx-auto flex flex-col gap-6 page-fade-in relative z-10">
+    <>
+      <div className="p-8 flex-1 max-w-6xl w-full mx-auto flex flex-col gap-6 page-fade-in relative z-10">
       {/* Greeting Banner */}
       <div className="flex flex-col gap-1 mb-2">
         <div className="flex items-center gap-3">
@@ -316,6 +317,8 @@ function Dashboard({ applications, profile, onUpdateStatus, onDelete, showToast 
         </div>
       </div>
 
+      </div>
+
       {/* Details modal */}
       <DetailsModal 
         isOpen={isModalOpen}
@@ -325,7 +328,7 @@ function Dashboard({ applications, profile, onUpdateStatus, onDelete, showToast 
         onUpdateStatus={onUpdateStatus}
         onDelete={onDelete}
       />
-    </div>
+    </>
   );
 }
 

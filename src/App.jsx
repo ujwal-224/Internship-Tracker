@@ -13,7 +13,7 @@ import './App.css';
 // Route Parser Helper
 const getRoute = (hash) => {
   if (!hash || hash === '#' || hash === '#/') return { page: 'launcher' };
-  
+
   if (hash.startsWith('#id=')) {
     return { page: 'applications', id: hash.replace('#id=', '') };
   }
@@ -23,15 +23,15 @@ const getRoute = (hash) => {
 
   const cleanHash = hash.startsWith('#/') ? hash.substring(2) : hash.substring(1);
   const qMarkIndex = cleanHash.indexOf('?');
-  
+
   let path = cleanHash;
   let searchStr = '';
-  
+
   if (qMarkIndex !== -1) {
     path = cleanHash.substring(0, qMarkIndex);
     searchStr = cleanHash.substring(qMarkIndex + 1);
   }
-  
+
   const searchParams = new URLSearchParams(searchStr);
   const search = searchParams.get('search') || '';
 
@@ -101,7 +101,7 @@ function App() {
   const showToast = (message, type = 'success') => {
     const id = Date.now() + Math.random();
     setToasts((prev) => [...prev, { id, message, type }]);
-    
+
     // Auto-remove toast
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
@@ -157,34 +157,39 @@ function App() {
 
   return (
     <div className="font-body-md text-on-surface antialiased overflow-hidden h-screen flex dark:text-slate-100">
-      
+
       {/* Sidebar Drawer */}
-      <Sidebar 
-        currentPage={route.page} 
-        isSidebarOpen={isSidebarOpen} 
-        onClose={() => setIsSidebarOpen(false)} 
+      <Sidebar
+        currentPage={route.page}
+        isSidebarOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
       />
 
       {/* Main Content Area */}
       <main className="flex-1 md:ml-sidebar-width h-full overflow-y-auto bg-slate-50/50 dark:bg-slate-950/50 flex flex-col relative">
-        {/* Header displays on all pages except Add New Application page */}
-        {route.page !== 'add-new' && (
-          <Header 
-            onMenuClick={() => setIsSidebarOpen(true)}
-            profile={profile}
-            isDark={isDark}
-            setIsDark={setIsDark}
-            showToast={showToast}
-            title={route.page === 'profile' ? 'My Profile' : undefined}
-            searchQuery={searchQuery}
-            onSearchChange={route.page === 'applications' ? setSearchQuery : undefined}
-          />
-        )}
+        {/* Header displays on all pages */}
+        <Header
+          onMenuClick={() => setIsSidebarOpen(true)}
+          profile={profile}
+          isDark={isDark}
+          setIsDark={setIsDark}
+          showToast={showToast}
+          title={
+            route.page === 'profile'
+              ? 'My Profile'
+              : route.page === 'add-new'
+                ? ' '
+                : undefined
+          }
+          hideSearch={true}
+          searchQuery={searchQuery}
+          onSearchChange={route.page === 'applications' ? setSearchQuery : undefined}
+        />
 
         {/* Dynamic Page Views */}
         {route.page === 'dashboard' && (
-          <Dashboard 
-            applications={applications} 
+          <Dashboard
+            applications={applications}
             profile={profile}
             onUpdateStatus={updateStatus}
             onDelete={deleteApplication}
@@ -193,10 +198,11 @@ function App() {
         )}
 
         {route.page === 'applications' && (
-          <Applications 
+          <Applications
             applications={applications}
             selectedAppId={route.id}
             searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
             onUpdateStatus={updateStatus}
             onDelete={deleteApplication}
             onSaveNotes={saveNotes}
@@ -205,7 +211,7 @@ function App() {
         )}
 
         {route.page === 'board' && (
-          <Board 
+          <Board
             applications={applications}
             onUpdateStatus={updateStatus}
             onDelete={deleteApplication}
@@ -214,14 +220,14 @@ function App() {
         )}
 
         {route.page === 'add-new' && (
-          <AddNew 
+          <AddNew
             onAdd={addApplication}
             showToast={showToast}
           />
         )}
 
         {route.page === 'profile' && (
-          <Profile 
+          <Profile
             profile={profile}
             onUpdateProfile={updateProfile}
             showToast={showToast}
@@ -235,7 +241,7 @@ function App() {
           let icon = "check_circle";
           let accentClass = "text-green-400 dark:text-green-600";
           let borderClass = "border-l-4 border-l-green-500";
-          
+
           if (toast.type === "error") {
             icon = "error";
             accentClass = "text-red-400 dark:text-red-600";
@@ -247,7 +253,7 @@ function App() {
           }
 
           return (
-            <div 
+            <div
               key={toast.id}
               className={`flex items-center gap-2.5 px-4 py-3 bg-slate-900/95 dark:bg-white text-white dark:text-slate-900 shadow-xl rounded-2xl text-xs font-semibold pointer-events-auto transition-all duration-300 ${borderClass} border border-white/10 dark:border-slate-200/10 animate-fade-in`}
               style={{ padding: '14px 18px' }}

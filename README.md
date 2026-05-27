@@ -1,101 +1,150 @@
-<div align="center">
-  <h1>🚀 InternFlow</h1>
-  <p><strong>A Modern, Full-Stack Internship Tracking Platform</strong></p>
-  
-  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
-  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
-  <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
-  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
-</div>
+# CareerPilot (Internship Tracker)
 
-<br />
-
-**InternFlow** is a modern, full-stack web application designed to help students organize and manage their internship hunt efficiently in one centralized platform. Instead of tracking applications through scattered emails, messy spreadsheets, and disjointed notes, InternFlow provides a clean, unified dashboard to monitor application statuses, interview progress, crucial deadlines, and personal notes.
-
-Built with a highly scalable full-stack architecture and a sleek SaaS-inspired UI, InternFlow turns the chaotic job search into a streamlined, stress-free process.
+CareerPilot is a modern, premium SaaS platform designed to help students and job seekers track their internship and job applications with a highly polished, interactive user interface. Built with a stunning cosmic-inspired dark/glassmorphic aesthetic, the application provides a centralized hub to monitor application statuses, manage interviews, and track personal career growth.
 
 ---
 
-## 🎯 Problem Statement
+## Features
 
-Students often struggle to manage multiple internship applications across different platforms, leading to missed deadlines, lost interview details, and unnecessary stress. 
-
-**InternFlow solves this by:**
-* **Centralizing all applications** in a single, intuitive interface.
-* **Tracking progress visually** through various stages of the hiring pipeline.
-* **Organizing interview updates** and feedback efficiently.
-* **Managing notes and deadlines**, ensuring no opportunity slips through the cracks.
-
----
-
-## ✨ Features
-
-### Current Features
-* **📝 Comprehensive Application Management:** Easily add, edit, and delete internship applications.
-* **📊 Dashboard Overview:** Get a quick, visual summary of your job search progress.
-* **🔎 Search & Filter:** Quickly find specific applications using advanced search and filter functionality.
-* **📱 Responsive Modern UI:** Enjoy a premium, seamless experience across desktop, tablet, and mobile devices.
-* **📋 Application Table:** View all your opportunities in an organized, sortable data table.
-* **📓 Notes & Updates:** Keep track of company research, interview questions, and personal reminders.
-
-### Application Status Tracking
-Visually move your applications through customized pipeline stages:
-* **Applied:** Initial application sent.
-* **Interview:** Screening, technical, or final rounds scheduled.
-* **Selected:** Offer received! 🎉
-* **Rejected:** Moving forward to the next opportunity.
+- **Comprehensive Dashboard:** Get a bird's-eye view of your application funnel, recent activity, and key performance metrics via an intuitive Bento-grid layout.
+- **Application Management:** Detailed list and card views with advanced filtering, timeline milestones, and interview notes for every opportunity.
+- **Interactive Pipeline Board:** Visual drag-and-drop Kanban board to manage applications across various stages (Applied, Screening, Interviewing, Offer).
+- **Premium User Experience:**
+  - Beautiful glassmorphism UI with vibrant gradient accents.
+  - Micro-animations and seamless transitions across all modules.
+  - Fully responsive design optimized for all screen sizes.
+- **Profile & Settings:** Manage your resume versions, skillsets, and notification preferences in a dedicated portal.
+- **Local Storage Integration:** Fully functional client-side application that securely stores your data in your browser's local storage. No backend required!
 
 ---
 
-## 🛠️ Technology Stack
+## Problem Statement
 
-### Frontend
-* **React** - UI Component Library
-* **Tailwind CSS** - Utility-first styling framework
-* **React Router** - Client-side routing
-* **Lucide React Icons** - Beautiful, consistent iconography
+Students often struggle to manage multiple internship applications across different platforms.
 
-### Backend & Database
-* **Node.js & Express.js** - Robust REST API backend
-* **MongoDB** - Flexible NoSQL database for data persistence
+- **CareerPilot solves this by:**
+  - Centralizing all applications
+  - Tracking progress visually
+  - Organizing interview updates
+  - Managing notes and deadlines efficiently
+
+## Technology Stack
+
+- **Core Framework:** React 18+ (Vite)
+- **Styling Framework:** Tailwind CSS & Vanilla CSS (variables, layout tokens)
+- **Icons:** Google Material Symbols
+- **Data Persistence:** Browser `localStorage` API
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
+
+To run CareerPilot locally on your machine, follow these steps:
 
 ### 1. Prerequisites
+
 Ensure you have [Node.js](https://nodejs.org/) and [MongoDB](https://www.mongodb.com/) installed on your machine.
 
 ### 2. Installation
+
 Clone the repository and install dependencies:
 
 ```bash
 npm install
 ```
-*(Note: Adjust this section if your frontend and backend are in separate directories, e.g., `cd client && npm install`)*
+
+_(Note: Adjust this section if your frontend and backend are in separate directories, e.g., `cd client && npm install`)_
 
 ### 3. Environment Setup
+
 Create a `.env` file in your project root and add your MongoDB connection string and any other required variables:
+
 ```env
 MONGO_URI=your_mongodb_connection_string
 PORT=5000
 ```
 
 ### 4. Running the Application
+
 Start the development server:
 
 ```bash
 npm run dev
 ```
 
+Then open the address displayed in your terminal (usually `http://localhost:5173/` or `http://localhost:5174/`) in your web browser.
+
+### 4. Build for Production
+
+To build a highly optimized production bundle:
+
+```bash
+npm run build
+```
+
 ---
 
-## 🤝 Contributing
+## Project Structure
 
-Contributions, issues, and feature requests are welcome! Feel free to check the issues page if you want to contribute to InternFlow.
+All application source code resides in the root workspace directory:
+
+- `src/App.jsx` - The main layout container, central state manager, and hash-based route controller.
+- `src/components/` - Reusable UI views and cards:
+  - `Launcher.jsx` - Splash page preloader.
+  - `Sidebar.jsx` - Desktop and mobile navigation drawers.
+  - `Header.jsx` - Top search bar, theme toggler, and notification dropdown.
+  - `Dashboard.jsx` - Bento metrics cards and funnel statistics.
+  - `Applications.jsx` - Applications table filters and timeline progress view.
+  - `Board.jsx` - Drag-and-drop Kanban swimlanes.
+  - `AddNew.jsx` - Form validator wizard.
+  - `Profile.jsx` - User profile, skills manager, and preferences.
+  - `DetailsModal.jsx` - Card modal popup for detailed updates.
+- `src/utils/helpers.js` - Storage managers, initials avatar mappings, date formatters, and seed data.
+- `src/index.css` - Custom glassmorphic styles, color tokens, and preloader animations.
 
 ---
 
-## 📝 License
+## UI Theme
+
+- Modern Light Theme
+- Blue SaaS-inspired dashboard
+- Clean and minimal design
+- User-friendly interface
+- Responsive layout
+
+## Future Enhancements
+
+- Authentication & Authorization
+- Resume Uploads
+- Email Notifications
+- Analytics Dashboard
+- Interview Reminders
+- AI-based Resume Suggestions
+
+## Team Members
+
+- Ujwal
+- Anshitha
+- Bhavya
+- Yaswantta
+
+## Project Status
+
+Currently under active development.
+
+- **The project is being developed using a frontend-first workflow:**
+  - Wireframes & UI Design
+  - Frontend Development
+  - Backend Integration
+  - Database Connectivity
+  - Deployment & Testing
+
+## Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the issues page if you want to contribute.
+
+---
+
+## License
 
 This project is open-source and available under the [MIT License](LICENSE).
