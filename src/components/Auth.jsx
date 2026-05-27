@@ -43,7 +43,7 @@ const STATIC_PARTICLES = Array.from({ length: 22 }, (_, i) => ({
 }));
 
 /* ── Main Auth Component ─────────────────────────────────── */
-const Auth = ({ onAuthSuccess }) => {
+const Auth = ({ onAuthSuccess, isDark, setIsDark }) => {
   const [isLogin,   setIsLogin]   = useState(true);
   const [formData,  setFormData]  = useState({ name: '', email: '', password: '' });
   const [showPass,  setShowPass]  = useState(false);
@@ -88,6 +88,20 @@ const Auth = ({ onAuthSuccess }) => {
       id="auth-page"
       className={`auth-root ${mounted ? 'auth-root--visible' : ''}`}
     >
+      {/* ── Theme Switcher Button ──────────────────────────── */}
+      {setIsDark && (
+        <button
+          type="button"
+          onClick={() => setIsDark(!isDark)}
+          className="fixed top-6 right-6 w-11 h-11 rounded-full flex items-center justify-center border border-slate-200/25 dark:border-slate-800/80 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md text-slate-700 dark:text-slate-200 hover:scale-105 active:scale-95 transition-all duration-300 z-50 cursor-pointer shadow-lg hover:border-violet-500/50"
+          title="Toggle theme"
+        >
+          <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>
+            {isDark ? 'light_mode' : 'dark_mode'}
+          </span>
+        </button>
+      )}
+
       {/* ── Floating particles ───────────────────────────── */}
       {particles.map(p => (
         <Particle key={p.id} style={{

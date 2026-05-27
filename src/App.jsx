@@ -173,11 +173,15 @@ function App() {
     <div className="font-body-md text-on-surface antialiased overflow-hidden h-screen flex dark:text-slate-100">
 
       {!isAuthenticated ? (
-        <Auth onAuthSuccess={() => {
-          setIsAuthenticated(true);
-          localStorage.setItem("internflow_auth", "true");
-          showToast("Successfully logged in!", "success");
-        }} />
+        <Auth 
+          isDark={isDark}
+          setIsDark={setIsDark}
+          onAuthSuccess={() => {
+            setIsAuthenticated(true);
+            localStorage.setItem("internflow_auth", "true");
+            showToast("Successfully logged in!", "success");
+          }} 
+        />
       ) : (
         <>
           {/* Sidebar Drawer */}
