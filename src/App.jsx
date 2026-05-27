@@ -7,6 +7,7 @@ import Applications from './components/Applications';
 import Board from './components/Board';
 import AddNew from './components/AddNew';
 import Profile from './components/Profile';
+import Auth from './components/Auth';
 import { getApplications, saveApplications } from './utils/helpers';
 import './App.css';
 
@@ -53,6 +54,9 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [toasts, setToasts] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem("careerpilot_auth") === "true";
+  });
 
   const [profile, setProfile] = useState(() => {
     return JSON.parse(localStorage.getItem("careerpilot_profile")) || {
@@ -158,15 +162,23 @@ function App() {
   return (
     <div className="font-body-md text-on-surface antialiased overflow-hidden h-screen flex dark:text-slate-100">
 
-      {/* Sidebar Drawer */}
-      <Sidebar
-        currentPage={route.page}
-        isSidebarOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
-      />
+      {!isAuthenticated ? (
+        <Auth onAuthSuccess={() => {
+          setIsAuthenticated(true);
+          localStorage.setItem("careerpilot_auth", "true");
+          showToast("Successfully logged in!", "success");
+        }} />
+      ) : (
+        <>
+          {/* Sidebar Drawer */}
+          <Sidebar
+            currentPage={route.page}
+            isSidebarOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
+          />
 
-      {/* Main Content Area */}
-      <main className="flex-1 md:ml-sidebar-width h-full overflow-y-auto bg-slate-50/50 dark:bg-slate-950/50 flex flex-col relative">
+          {/* Main Content Area */}
+          <main className="flex-1 md:ml-sidebar-width h-full overflow-y-auto bg-slate-50/50 dark:bg-slate-950/50 flex flex-col relative">
         {/* Header displays on all pages */}
         <Header
           onMenuClick={() => setIsSidebarOpen(true)}
@@ -234,6 +246,8 @@ function App() {
           />
         )}
       </main>
+      </>
+      )}
 
       {/* Toast Notification Container */}
       <div id="toast-container" className="fixed top-6 right-6 z-[100] flex flex-col gap-3 pointer-events-none">
