@@ -251,6 +251,7 @@ function App() {
             profile={profile}
             onUpdateProfile={updateProfile}
             showToast={showToast}
+            onSignOut={handleSignOut}
           />
         )}
       </main>

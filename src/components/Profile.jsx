@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Profile({ profile, onUpdateProfile, showToast }) {
+function Profile({ profile, onUpdateProfile, showToast, onSignOut }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [skills, setSkills] = useState(['Figma', 'Wireframing', 'Prototyping', 'User Research', 'HTML/CSS']);
   const [newSkill, setNewSkill] = useState('');
@@ -287,8 +287,9 @@ function Profile({ profile, onUpdateProfile, showToast }) {
             
             <div className="border-t border-slate-100 dark:border-slate-800/60 pt-5">
               <button 
-                onClick={() => showToast("Signed out successfully (simulation)...", "info")}
-                className="flex items-center gap-2 text-red-650 hover:text-red-700 dark:text-red-400 font-semibold text-sm transition-colors"
+                id="profile-sign-out-btn"
+                onClick={() => { if (onSignOut) onSignOut(); }}
+                className="flex items-center gap-2 text-red-500 hover:text-red-700 dark:text-red-400 font-semibold text-sm transition-colors"
               >
                 <span className="material-symbols-outlined text-[18px]">logout</span>
                 Sign Out
