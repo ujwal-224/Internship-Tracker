@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
 /* ── Floating particle component ─────────────────────────── */
 const Particle = ({ style }) => (
@@ -39,21 +39,22 @@ const Auth = ({ onAuthSuccess }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [animating, setAnimating] = useState(false);
   const [focused,   setFocused]   = useState('');
+  const [particles, setParticles] = useState([]);
   const [mounted,   setMounted]   = useState(false);
-  const particlesRef = useRef([]);
 
-  /* Generate static particle positions once */
+  /* Generate static particle positions once on mount */
   useEffect(() => {
-    particlesRef.current = Array.from({ length: 22 }, (_, i) => ({
-      id: i,
-      left:   `${Math.random() * 100}%`,
-      top:    `${Math.random() * 100}%`,
-      size:   `${2 + Math.random() * 3}px`,
-      delay:  `${Math.random() * 6}s`,
-      duration: `${5 + Math.random() * 8}s`,
-      opacity: 0.2 + Math.random() * 0.5,
-    }));
-    /* Trigger mount animation after tiny delay */
+    setParticles(
+      Array.from({ length: 22 }, (_, i) => ({
+        id:       i,
+        left:     `${Math.random() * 100}%`,
+        top:      `${Math.random() * 100}%`,
+        size:     `${2 + Math.random() * 3}px`,
+        delay:    `${Math.random() * 6}s`,
+        duration: `${5 + Math.random() * 8}s`,
+        opacity:  0.2 + Math.random() * 0.5,
+      }))
+    );
     const t = setTimeout(() => setMounted(true), 50);
     return () => clearTimeout(t);
   }, []);
@@ -88,7 +89,7 @@ const Auth = ({ onAuthSuccess }) => {
       className={`auth-root ${mounted ? 'auth-root--visible' : ''}`}
     >
       {/* ── Floating particles ───────────────────────────── */}
-      {particlesRef.current.map(p => (
+      {particles.map(p => (
         <Particle key={p.id} style={{
           left:            p.left,
           top:             p.top,
@@ -169,14 +170,14 @@ const Auth = ({ onAuthSuccess }) => {
           <div className="auth-tabs">
             <button
               type="button"
-              onClick={() => isLogin  || toggleMode()}
+              onClick={() => { if (!isLogin) toggleMode(); }}
               className={`auth-tab ${isLogin ? 'auth-tab--active' : ''}`}
             >
               Sign In
             </button>
             <button
               type="button"
-              onClick={() => !isLogin || toggleMode()}
+              onClick={() => { if (isLogin) toggleMode(); }}
               className={`auth-tab ${!isLogin ? 'auth-tab--active' : ''}`}
             >
               Sign Up
@@ -304,7 +305,7 @@ const Auth = ({ onAuthSuccess }) => {
                   <div className="auth-strength">
                     {[...Array(4)].map((_, i) => (
                       <div
-                        key={i}
+                        key={`strength-${i}`}
                         className="auth-strength__bar"
                         style={{
                           background: i < Math.min(Math.ceil(formData.password.length / 3), 4)
