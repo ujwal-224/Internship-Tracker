@@ -8,6 +8,7 @@ import Board from './components/Board';
 import AddNew from './components/AddNew';
 import Profile from './components/Profile';
 import Auth from './components/Auth';
+import Notes from './components/Notes';
 import { getApplications, saveApplications } from './utils/helpers';
 import './App.css';
 
@@ -42,6 +43,7 @@ const getRoute = (hash) => {
     return { page: 'applications', id, search };
   }
   if (path === 'board') return { page: 'board' };
+  if (path === 'notes') return { page: 'notes' };
   if (path === 'add-new') return { page: 'add-new' };
   if (path === 'profile') return { page: 'profile' };
 
@@ -242,6 +244,14 @@ function App() {
             applications={applications}
             onUpdateStatus={updateStatus}
             onDelete={deleteApplication}
+            showToast={showToast}
+          />
+        )}
+
+        {route.page === 'notes' && (
+          <Notes
+            applications={applications}
+            onSaveNotes={saveNotes}
             showToast={showToast}
           />
         )}

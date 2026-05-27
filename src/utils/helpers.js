@@ -241,3 +241,73 @@ export function getAppMilestones(app) {
     
     return milestones;
 }
+
+export const DEFAULT_NOTES = [
+    {
+        id: "note-1",
+        company: "Google",
+        role: "Software Engineering Intern",
+        round: "Technical",
+        date: "2026-05-20",
+        difficulty: "Medium",
+        status: "Selected",
+        skills: ["Algorithms", "Graphs", "C++"],
+        notes: "Focused heavily on graph algorithms and system design basics. The interviewer was friendly but very precise about time complexity. Used DFS to solve cycle detection.",
+        questions: "1. How do you detect a cycle in a directed graph?\n2. Design an LRU Cache with O(1) get and put operations.",
+        tips: "Always explain your trade-offs between space and time complexity before writing code. Practice talking out loud.",
+        mistakes: "Initially forgot to check for cyclic references in node visits, but corrected it during walkthrough.",
+        starred: true,
+        confidence: 4,
+        voiceNote: null,
+        attachments: []
+    },
+    {
+        id: "note-2",
+        company: "Stripe",
+        role: "Backend Engineer Intern",
+        round: "HR",
+        date: "2026-05-18",
+        difficulty: "Easy",
+        status: "Selected",
+        skills: ["Behavioral", "System Design", "APIs"],
+        notes: "Discussed past projects, teamwork challenges, and why I wanted to join Stripe. They really value clean code, API design principles, and strong collaboration skills.",
+        questions: "1. Tell me about a time you resolved a major bug in production under tight deadlines.\n2. Why Stripe and how would you design a simple idempotent payment API?",
+        tips: "Structure your answers using the STAR method (Situation, Task, Action, Result). Highlight your specific contribution.",
+        mistakes: "Spent too much time detailing the technical background of my project instead of focusing on what I did to solve it.",
+        starred: false,
+        confidence: 5,
+        voiceNote: null,
+        attachments: []
+    },
+    {
+        id: "note-3",
+        company: "Vercel",
+        role: "Frontend Engineer Intern",
+        round: "OA",
+        date: "2026-05-12",
+        difficulty: "Hard",
+        status: "Waiting",
+        skills: ["Next.js", "React", "TypeScript"],
+        notes: "Coding assignment with performance-oriented questions. Needed to build a search-as-you-type component with debouncing and virtualized list. Focus on minimizing layout shifts.",
+        questions: "1. Implement a search input with custom hook for debouncing and caching search results.\n2. Explain the difference between Server Components and Client Components in React 19.",
+        tips: "Make sure Layout Shift (CLS) is minimized. Write clean TypeScript types and avoid using 'any'.",
+        mistakes: "Forgot to clear the debounce timer in the useEffect cleanup function, which could cause a memory leak. Caught it later.",
+        starred: true,
+        confidence: 3,
+        voiceNote: null,
+        attachments: []
+    }
+];
+
+export function getNotes() {
+    let notes = JSON.parse(localStorage.getItem("careerpilot_notes"));
+    if (!notes) {
+        notes = [...DEFAULT_NOTES];
+        localStorage.setItem("careerpilot_notes", JSON.stringify(notes));
+    }
+    return notes;
+}
+
+export function saveNotes(notes) {
+    localStorage.setItem("careerpilot_notes", JSON.stringify(notes));
+}
