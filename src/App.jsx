@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Launcher from './components/Launcher';
@@ -7,6 +7,7 @@ import Applications from './components/Applications';
 import Board from './components/Board';
 import AddNew from './components/AddNew';
 import Profile from './components/Profile';
+import Auth from './components/Auth';
 import Notes from './components/Notes';
 import { getApplications, saveApplications } from './utils/helpers';
 import './App.css';
@@ -55,9 +56,12 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [toasts, setToasts] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem("internflow_auth") === "true";
+  });
 
   const [profile, setProfile] = useState(() => {
-    return JSON.parse(localStorage.getItem("careerpilot_profile")) || {
+    return JSON.parse(localStorage.getItem("internflow_profile")) || {
       name: "Sarah Jenkins",
       role: "UX Design Intern Candidate",
       email: "sarah.j@example.com",
@@ -68,7 +72,7 @@ function App() {
   });
 
   const [isDark, setIsDark] = useState(() => {
-    return localStorage.getItem("careerpilot_dark") === "true";
+    return localStorage.getItem("internflow_dark") === "true";
   });
 
   // Theme effect
@@ -78,7 +82,7 @@ function App() {
     } else {
       document.documentElement.classList.remove("dark");
     }
-    localStorage.setItem("careerpilot_dark", isDark ? "true" : "false");
+    localStorage.setItem("internflow_dark", isDark ? "true" : "false");
   }, [isDark]);
 
   // Sync hash changes
@@ -95,7 +99,10 @@ function App() {
   // Sync search queries from the route parameters
   useEffect(() => {
     if (route.page === 'applications' && route.search) {
-      setSearchQuery(route.search);
+      const id = requestAnimationFrame(() => {
+        setSearchQuery(route.search);
+      });
+      return () => cancelAnimationFrame(id);
     }
   }, [route]);
 
@@ -149,7 +156,14 @@ function App() {
 
   const updateProfile = (updatedProfile) => {
     setProfile(updatedProfile);
-    localStorage.setItem("careerpilot_profile", JSON.stringify(updatedProfile));
+    localStorage.setItem("internflow_profile", JSON.stringify(updatedProfile));
+  };
+
+  const handleSignOut = () => {
+    localStorage.removeItem("internflow_auth");
+    setIsAuthenticated(false);
+    window.location.hash = '#/';
+    showToast("Signed out successfully", "info");
   };
 
   // Launcher Page takes over screen
@@ -160,15 +174,27 @@ function App() {
   return (
     <div className="font-body-md text-on-surface antialiased overflow-hidden h-screen flex dark:text-slate-100">
 
-      {/* Sidebar Drawer */}
-      <Sidebar
-        currentPage={route.page}
-        isSidebarOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
-      />
+      {!isAuthenticated ? (
+        <Auth 
+          isDark={isDark}
+          setIsDark={setIsDark}
+          onAuthSuccess={() => {
+            setIsAuthenticated(true);
+            localStorage.setItem("internflow_auth", "true");
+            showToast("Successfully logged in!", "success");
+          }} 
+        />
+      ) : (
+        <>
+          {/* Sidebar Drawer */}
+          <Sidebar
+            currentPage={route.page}
+            isSidebarOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
+          />
 
-      {/* Main Content Area */}
-      <main className="flex-1 md:ml-sidebar-width h-full overflow-y-auto bg-slate-50/50 dark:bg-slate-950/50 flex flex-col relative">
+          {/* Main Content Area */}
+          <main className="flex-1 md:ml-sidebar-width h-full overflow-y-auto bg-slate-50/50 dark:bg-slate-950/50 flex flex-col relative">
         {/* Header displays on all pages */}
         <Header
           onMenuClick={() => setIsSidebarOpen(true)}
@@ -176,6 +202,7 @@ function App() {
           isDark={isDark}
           setIsDark={setIsDark}
           showToast={showToast}
+          onSignOut={handleSignOut}
           title={
             route.page === 'profile'
               ? 'My Profile'
@@ -241,9 +268,12 @@ function App() {
             profile={profile}
             onUpdateProfile={updateProfile}
             showToast={showToast}
+            onSignOut={handleSignOut}
           />
         )}
       </main>
+      </>
+      )}
 
       {/* Toast Notification Container */}
       <div id="toast-container" className="fixed top-6 right-6 z-[100] flex flex-col gap-3 pointer-events-none">

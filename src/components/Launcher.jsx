@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 function Launcher() {
   useEffect(() => {
@@ -53,7 +53,7 @@ function Launcher() {
           </div>
         </div>
         
-        <h1 className="text-2xl font-extrabold bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent mb-2 tracking-tight">CareerPilot</h1>
+        <h1 className="text-2xl font-extrabold bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent mb-2 tracking-tight">InternFlow</h1>
         
         {/* Loading Bar */}
         <div className="w-full bg-slate-800 rounded-full h-1.5 mt-4 overflow-hidden relative">

@@ -1,20 +1,20 @@
-# InternFlow (Internship Tracker) 
+# InternFlow (Internship Tracker)
 
 InternFlow is a modern, premium SaaS platform designed to help students and job seekers track their internship and job applications with a highly polished, interactive user interface. Built with a stunning cosmic-inspired dark/glassmorphic aesthetic, the application provides a centralized hub to monitor application statuses, manage interviews, and track personal career growth.
 
 ---
 
-##  Features
+## Features
 
-* **Comprehensive Dashboard:** Get a bird's-eye view of your application funnel, recent activity, and key performance metrics via an intuitive Bento-grid layout.
-* **Application Management:** Detailed list and card views with advanced filtering, timeline milestones, and interview notes for every opportunity.
-* **Interactive Pipeline Board:** Visual drag-and-drop Kanban board to manage applications across various stages (Applied, Screening, Interviewing, Offer).
-* **Premium User Experience:** 
-  * Beautiful glassmorphism UI with vibrant gradient accents.
-  * Micro-animations and seamless transitions across all modules.
-  * Fully responsive design optimized for all screen sizes.
-* **Profile & Settings:** Manage your resume versions, skillsets, and notification preferences in a dedicated portal.
-* **Local Storage Integration:** Fully functional client-side application that securely stores your data in your browser's local storage. No backend required!
+- **Comprehensive Dashboard:** Get a bird's-eye view of your application funnel, recent activity, and key performance metrics via an intuitive Bento-grid layout.
+- **Application Management:** Detailed list and card views with advanced filtering, timeline milestones, and interview notes for every opportunity.
+- **Interactive Pipeline Board:** Visual drag-and-drop Kanban board to manage applications across various stages (Applied, Screening, Interviewing, Offer).
+- **Premium User Experience:**
+  - Beautiful glassmorphism UI with vibrant gradient accents.
+  - Micro-animations and seamless transitions across all modules.
+  - Fully responsive design optimized for all screen sizes.
+- **Profile & Settings:** Manage your resume versions, skillsets, and notification preferences in a dedicated portal.
+- **Local Storage Integration:** Fully functional client-side application that securely stores your data in your browser's local storage. No backend required!
 
 ---
 
@@ -22,18 +22,18 @@ InternFlow is a modern, premium SaaS platform designed to help students and job 
 
 Students often struggle to manage multiple internship applications across different platforms.
 
-* **InternFlow solves this by:**
-    * Centralizing all applications
-    * Tracking progress visually
-    * Organizing interview updates
-    * Managing notes and deadlines efficiently
+- **InternFlow solves this by:**
+  - Centralizing all applications
+  - Tracking progress visually
+  - Organizing interview updates
+  - Managing notes and deadlines efficiently
 
 ## Technology Stack
 
-* **Core Framework:** React 18+ (Vite)
-* **Styling Framework:** Tailwind CSS & Vanilla CSS (variables, layout tokens)
-* **Icons:** Google Material Symbols
-* **Data Persistence:** Browser `localStorage` API
+- **Core Framework:** React 18+ (Vite)
+- **Styling Framework:** Tailwind CSS & Vanilla CSS (variables, layout tokens)
+- **Icons:** Google Material Symbols
+- **Data Persistence:** Browser `localStorage` API
 
 ---
 
@@ -42,23 +42,42 @@ Students often struggle to manage multiple internship applications across differ
 To run InternFlow locally on your machine, follow these steps:
 
 ### 1. Prerequisites
-Make sure you have [Node.js](https://nodejs.org/) installed (v16+ recommended).
 
-### 2. Install Dependencies
-Install the package dependencies in the project root:
+Ensure you have [Node.js](https://nodejs.org/) and [MongoDB](https://www.mongodb.com/) installed on your machine.
+
+### 2. Installation
+
+Clone the repository and install dependencies:
+
 ```bash
 npm install
 ```
 
-### 3. Run Development Server
-Start the local Vite development server:
+_(Note: Adjust this section if your frontend and backend are in separate directories, e.g., `cd client && npm install`)_
+
+### 3. Environment Setup
+
+Create a `.env` file in your project root and add your MongoDB connection string and any other required variables:
+
+```env
+MONGO_URI=your_mongodb_connection_string
+PORT=5000
+```
+
+### 4. Running the Application
+
+Start the development server:
+
 ```bash
 npm run dev
 ```
+
 Then open the address displayed in your terminal (usually `http://localhost:5173/` or `http://localhost:5174/`) in your web browser.
 
 ### 4. Build for Production
+
 To build a highly optimized production bundle:
+
 ```bash
 npm run build
 ```
@@ -69,58 +88,63 @@ npm run build
 
 All application source code resides in the root workspace directory:
 
-* `src/App.jsx` - The main layout container, central state manager, and hash-based route controller.
-* `src/components/` - Reusable UI views and cards:
-  * `Launcher.jsx` - Splash page preloader.
-  * `Sidebar.jsx` - Desktop and mobile navigation drawers.
-  * `Header.jsx` - Top search bar, theme toggler, and notification dropdown.
-  * `Dashboard.jsx` - Bento metrics cards and funnel statistics.
-  * `Applications.jsx` - Applications table filters and timeline progress view.
-  * `Board.jsx` - Drag-and-drop Kanban swimlanes.
-  * `AddNew.jsx` - Form validator wizard.
-  * `Profile.jsx` - User profile, skills manager, and preferences.
-  * `DetailsModal.jsx` - Card modal popup for detailed updates.
-* `src/utils/helpers.js` - Storage managers, initials avatar mappings, date formatters, and seed data.
-* `src/index.css` - Custom glassmorphic styles, color tokens, and preloader animations.
+- `src/App.jsx` - The main layout container, central state manager, and hash-based route controller.
+- `src/components/` - Reusable UI views and cards:
+  - `Launcher.jsx` - Splash page preloader.
+  - `Sidebar.jsx` - Desktop and mobile navigation drawers.
+  - `Header.jsx` - Top search bar, theme toggler, and notification dropdown.
+  - `Dashboard.jsx` - Bento metrics cards and funnel statistics.
+  - `Applications.jsx` - Applications table filters and timeline progress view.
+  - `Board.jsx` - Drag-and-drop Kanban swimlanes.
+  - `AddNew.jsx` - Form validator wizard.
+  - `Profile.jsx` - User profile, skills manager, and preferences.
+  - `DetailsModal.jsx` - Card modal popup for detailed updates.
+- `src/utils/helpers.js` - Storage managers, initials avatar mappings, date formatters, and seed data.
+- `src/index.css` - Custom glassmorphic styles, color tokens, and preloader animations.
 
 ---
- ## UI Theme
-* Modern Light Theme
-* Blue SaaS-inspired dashboard
-* Clean and minimal design
-* User-friendly interface
-* Responsive layout
+
+## UI Theme
+
+- Modern Light Theme
+- Blue SaaS-inspired dashboard
+- Clean and minimal design
+- User-friendly interface
+- Responsive layout
 
 ## Future Enhancements
-* Authentication & Authorization
-* Resume Uploads
-* Email Notifications
-* Analytics Dashboard
-* Interview Reminders
-* AI-based Resume Suggestions
+
+- Authentication & Authorization
+- Resume Uploads
+- Email Notifications
+- Analytics Dashboard
+- Interview Reminders
+- AI-based Resume Suggestions
 
 ## Team Members
-* Ujwal 
-* Anshitha 
-* Bhavya 
-* Yaswantta 
 
- ## Project Status
+- Ujwal
+- Anshitha
+- Bhavya
+- Yaswantta
+
+## Project Status
+
 Currently under active development.
 
-* **The project is being developed using a frontend-first workflow:**
-    * Wireframes & UI Design
-    * Frontend Development
-    * Backend Integration
-    * Database Connectivity
-    * Deployment & Testing
+- **The project is being developed using a frontend-first workflow:**
+  - Wireframes & UI Design
+  - Frontend Development
+  - Backend Integration
+  - Database Connectivity
+  - Deployment & Testing
 
-##  Contributing
+## Contributing
 
 Contributions, issues, and feature requests are welcome! Feel free to check the issues page if you want to contribute.
 
 ---
 
-##  License
+## License
 
 This project is open-source and available under the [MIT License](LICENSE).

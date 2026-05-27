@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react-hooks/immutability */
+import { useState, useEffect } from 'react';
 import { 
   getCompanyAvatarConfig, 
   getStatusBadgeClass, 
@@ -25,7 +26,11 @@ function Applications({
   // Sync notes when active application changes
   useEffect(() => {
     if (activeApp) {
-      setNotes(activeApp.notes || '');
+      // Use requestAnimationFrame to avoid synchronous cascading render warning
+      const id = requestAnimationFrame(() => {
+        setNotes(activeApp.notes || '');
+      });
+      return () => cancelAnimationFrame(id);
     }
   }, [selectedAppId, activeApp]);
 
@@ -236,8 +241,8 @@ function Applications({
                     isActive = true;
                   }
 
-                  let circleClass = "";
-                  let checkIcon = null;
+                  let circleClass;
+                  let checkIcon;
 
                   if (isCompleted) {
                     circleClass = "bg-green-100 dark:bg-green-950/30 text-green-600 dark:text-green-400 border-2 border-green-500";

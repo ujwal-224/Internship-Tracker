@@ -1,4 +1,4 @@
-// Helpers for CareerPilot application
+// Helpers for InternFlow application
 
 export const DEFAULT_APPLICATIONS = [
     {
@@ -130,10 +130,10 @@ export function formatInrSalary(salaryStr) {
 }
 
 export function getApplications() {
-    let apps = JSON.parse(localStorage.getItem("careerpilot_applications"));
+    let apps = JSON.parse(localStorage.getItem("internflow_applications"));
     if (!apps) {
         apps = [...DEFAULT_APPLICATIONS];
-        localStorage.setItem("careerpilot_applications", JSON.stringify(apps));
+        localStorage.setItem("internflow_applications", JSON.stringify(apps));
     } else {
         // Migrate legacy applications from USD to INR
         let migrated = false;
@@ -145,14 +145,14 @@ export function getApplications() {
             return app;
         });
         if (migrated) {
-            localStorage.setItem("careerpilot_applications", JSON.stringify(apps));
+            localStorage.setItem("internflow_applications", JSON.stringify(apps));
         }
     }
     return apps;
 }
 
 export function saveApplications(apps) {
-    localStorage.setItem("careerpilot_applications", JSON.stringify(apps));
+    localStorage.setItem("internflow_applications", JSON.stringify(apps));
 }
 
 export function formatDate(dateStr) {

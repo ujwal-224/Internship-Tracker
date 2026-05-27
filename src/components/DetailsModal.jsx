@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { getCompanyAvatarConfig, getStatusBadgeClass, formatDate } from '../utils/helpers';
 
 function DetailsModal({ isOpen, appId, applications, onClose, onUpdateStatus, onDelete }) {
