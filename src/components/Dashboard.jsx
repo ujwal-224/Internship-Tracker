@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { 
   getCompanyAvatarConfig, 
   getStatusBadgeClass, 
@@ -6,7 +6,7 @@ import {
 } from '../utils/helpers';
 import DetailsModal from './DetailsModal';
 
-function Dashboard({ applications, profile, onUpdateStatus, onDelete, showToast }) {
+function Dashboard({ applications, profile, onUpdateStatus, onDelete }) {
   const [selectedAppId, setSelectedAppId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -25,7 +25,6 @@ function Dashboard({ applications, profile, onUpdateStatus, onDelete, showToast 
   const interviewingCount = applications.filter(a => a.status === 'Interviewing' || a.status === 'Interview').length;
   const offerCount = applications.filter(a => a.status === 'Offer' || a.status === 'Selected').length;
   const rejectedCount = applications.filter(a => a.status === 'Rejected').length;
-  const appliedOnlyCount = applications.filter(a => a.status === 'Applied').length;
 
   // Active pipelines (anything not rejected)
   const activeCount = totalApps - rejectedCount;
@@ -61,7 +60,7 @@ function Dashboard({ applications, profile, onUpdateStatus, onDelete, showToast 
   };
 
   // Helper for rendering progress ring
-  const renderProgressRing = (percent, colorClass, shadowClass) => {
+  const renderProgressRing = (percent, colorClass) => {
     const radius = 16;
     const circ = 2 * Math.PI * radius; // ~100.53
     const offset = circ - (percent / 100) * circ;

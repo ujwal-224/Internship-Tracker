@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { formatInrSalary } from '../utils/helpers';
 
 function AddNew({ onAdd, showToast }) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Launcher from './components/Launcher';
@@ -97,7 +97,10 @@ function App() {
   // Sync search queries from the route parameters
   useEffect(() => {
     if (route.page === 'applications' && route.search) {
-      setSearchQuery(route.search);
+      const id = requestAnimationFrame(() => {
+        setSearchQuery(route.search);
+      });
+      return () => cancelAnimationFrame(id);
     }
   }, [route]);
 

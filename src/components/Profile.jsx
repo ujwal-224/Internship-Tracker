@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 function Profile({ profile, onUpdateProfile, showToast, onSignOut }) {
   const [isModalOpen, setIsModalOpen] = useState(false);

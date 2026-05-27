@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 /* ── Floating particle component ─────────────────────────── */
 const Particle = ({ style }) => (
@@ -31,6 +31,17 @@ const HERO_FEATURES = [
   { icon: 'notifications',  label: 'Never miss a deadline or follow-up'    },
 ];
 
+/* ── Pre-generated stable particle configurations at file scope (avoids Math.random inside component render/useMemo) ── */
+const STATIC_PARTICLES = Array.from({ length: 22 }, (_, i) => ({
+  id:       i,
+  left:     `${Math.random() * 100}%`,
+  top:      `${Math.random() * 100}%`,
+  size:     `${2 + Math.random() * 3}px`,
+  delay:    `${Math.random() * 6}s`,
+  duration: `${5 + Math.random() * 8}s`,
+  opacity:  0.2 + Math.random() * 0.5,
+}));
+
 /* ── Main Auth Component ─────────────────────────────────── */
 const Auth = ({ onAuthSuccess }) => {
   const [isLogin,   setIsLogin]   = useState(true);
@@ -39,22 +50,11 @@ const Auth = ({ onAuthSuccess }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [animating, setAnimating] = useState(false);
   const [focused,   setFocused]   = useState('');
-  const [particles, setParticles] = useState([]);
-  const [mounted,   setMounted]   = useState(false);
+  const particles = STATIC_PARTICLES;
 
-  /* Generate static particle positions once on mount */
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
-    setParticles(
-      Array.from({ length: 22 }, (_, i) => ({
-        id:       i,
-        left:     `${Math.random() * 100}%`,
-        top:      `${Math.random() * 100}%`,
-        size:     `${2 + Math.random() * 3}px`,
-        delay:    `${Math.random() * 6}s`,
-        duration: `${5 + Math.random() * 8}s`,
-        opacity:  0.2 + Math.random() * 0.5,
-      }))
-    );
     const t = setTimeout(() => setMounted(true), 50);
     return () => clearTimeout(t);
   }, []);
