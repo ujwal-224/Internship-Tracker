@@ -188,7 +188,6 @@ const Auth = ({ onAuthSuccess }) => {
 
           {/* Form wrapper with flip animation */}
           <div className={`auth-form-wrap ${animating ? 'auth-form-wrap--exit' : 'auth-form-wrap--enter'}`}>
-            {/* Header */}
             <div className="auth-form-header">
               <h2 className="auth-form-title">
                 {isLogin ? 'Welcome back 👋' : 'Create account 🚀'}
@@ -197,6 +196,14 @@ const Auth = ({ onAuthSuccess }) => {
                 {isLogin
                   ? 'Sign in to continue to your dashboard'
                   : 'Join thousands of students tracking smarter'}
+              </p>
+              {/* Inline mode toggle */}
+              <p className="auth-inline-toggle">
+                {isLogin ? "Don't have an account?" : 'Already have an account?'}
+                {' '}
+                <button type="button" onClick={toggleMode} className="auth-inline-toggle__btn">
+                  {isLogin ? 'Sign up free →' : '← Sign in'}
+                </button>
               </p>
             </div>
 

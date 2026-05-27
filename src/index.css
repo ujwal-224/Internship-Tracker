@@ -1112,3 +1112,25 @@ select option {
   .auth-form-panel { padding: 2rem 1.5rem; }
   .auth-social-row { flex-direction: column; }
 }
+
+/* ── Inline mode toggle (below form title) ─────────────────── */
+.auth-inline-toggle {
+  font-size: .80rem;
+  color: #475569;
+  margin-top: .35rem;
+}
+.auth-inline-toggle__btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: .80rem;
+  font-weight: 700;
+  color: #a78bfa;
+  cursor: pointer;
+  transition: color .2s, letter-spacing .2s;
+  letter-spacing: .01em;
+}
+.auth-inline-toggle__btn:hover {
+  color: #c4b5fd;
+  letter-spacing: .03em;
+}
