@@ -154,6 +154,13 @@ function App() {
     localStorage.setItem("careerpilot_profile", JSON.stringify(updatedProfile));
   };
 
+  const handleSignOut = () => {
+    localStorage.removeItem("careerpilot_auth");
+    setIsAuthenticated(false);
+    window.location.hash = '#/';
+    showToast("Signed out successfully", "info");
+  };
+
   // Launcher Page takes over screen
   if (route.page === 'launcher') {
     return <Launcher />;
@@ -186,6 +193,7 @@ function App() {
           isDark={isDark}
           setIsDark={setIsDark}
           showToast={showToast}
+          onSignOut={handleSignOut}
           title={
             route.page === 'profile'
               ? 'My Profile'
