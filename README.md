@@ -1,6 +1,6 @@
-# CareerPilot (Internship Tracker) 
+# InternFlow (Internship Tracker) 
 
-CareerPilot is a modern, premium SaaS platform designed to help students and job seekers track their internship and job applications with a highly polished, interactive user interface. Built with a stunning cosmic-inspired dark/glassmorphic aesthetic, the application provides a centralized hub to monitor application statuses, manage interviews, and track personal career growth.
+InternFlow is a modern, premium SaaS platform designed to help students and job seekers track their internship and job applications with a highly polished, interactive user interface. Built with a stunning cosmic-inspired dark/glassmorphic aesthetic, the application provides a centralized hub to monitor application statuses, manage interviews, and track personal career growth.
 
 ---
 
@@ -22,7 +22,7 @@ CareerPilot is a modern, premium SaaS platform designed to help students and job
 
 Students often struggle to manage multiple internship applications across different platforms.
 
-* **CareerPilot solves this by:**
+* **InternFlow solves this by:**
     * Centralizing all applications
     * Tracking progress visually
     * Organizing interview updates
@@ -39,7 +39,7 @@ Students often struggle to manage multiple internship applications across differ
 
 ## Getting Started
 
-To run CareerPilot locally on your machine, follow these steps:
+To run InternFlow locally on your machine, follow these steps:
 
 ### 1. Prerequisites
 Make sure you have [Node.js](https://nodejs.org/) installed (v16+ recommended).
