@@ -4,7 +4,7 @@ import {
   getStatusBadgeClass, 
   formatDate 
 } from '../utils/helpers';
-import DetailsModal from './DetailsModal';
+import DetailsModal from '../components/DetailsModal';
 
 function Board({ applications, onUpdateStatus, onDelete, showToast }) {
   const [selectedAppId, setSelectedAppId] = useState(null);
