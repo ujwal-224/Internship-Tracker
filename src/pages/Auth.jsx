@@ -136,9 +136,11 @@ const Auth = ({ onAuthSuccess, isDark, setIsDark }) => {
           <div className="auth-hero__content">
             {/* Logo mark */}
             <div className="auth-logo-wrap">
-              <span className="material-symbols-outlined text-white" style={{ fontSize: 32 }}>
-                rocket_launch
-              </span>
+              <img
+                src="/logo.png"
+                alt="InternFlow Logo"
+                style={{ width: 52, height: 52, objectFit: 'contain' }}
+              />
               <div className="auth-logo-glow" />
             </div>
 
