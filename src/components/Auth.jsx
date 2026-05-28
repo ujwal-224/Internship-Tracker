@@ -15,41 +15,41 @@ const ConstellationLines = () => (
     <line x1="55%" y1="80%" x2="20%" y2="70%" stroke="#a78bfa" strokeWidth="0.8" />
     <line x1="20%" y1="70%" x2="40%" y2="45%" stroke="#a78bfa" strokeWidth="0.8" />
     <circle cx="40%" cy="45%" r="2.5" fill="#a78bfa" />
-    <circle cx="70%" cy="25%" r="2"   fill="#60a5fa" />
-    <circle cx="85%" cy="60%" r="2"   fill="#60a5fa" />
+    <circle cx="70%" cy="25%" r="2" fill="#60a5fa" />
+    <circle cx="85%" cy="60%" r="2" fill="#60a5fa" />
     <circle cx="55%" cy="80%" r="2.5" fill="#a78bfa" />
-    <circle cx="20%" cy="70%" r="2"   fill="#a78bfa" />
-    <circle cx="15%" cy="20%" r="3"   fill="#c4b5fd" />
+    <circle cx="20%" cy="70%" r="2" fill="#a78bfa" />
+    <circle cx="15%" cy="20%" r="3" fill="#c4b5fd" />
   </svg>
 );
 
 /* ── Features listed on left hero panel ─────────────────── */
 const HERO_FEATURES = [
-  { icon: 'rocket_launch',  label: 'Track every application in one place' },
-  { icon: 'view_kanban',    label: 'Visual drag-and-drop pipeline board'   },
-  { icon: 'analytics',      label: 'Real-time insights & career analytics' },
-  { icon: 'notifications',  label: 'Never miss a deadline or follow-up'    },
+  { icon: 'rocket_launch', label: 'Track every application in one place' },
+  { icon: 'view_kanban', label: 'Visual drag-and-drop pipeline board' },
+  { icon: 'analytics', label: 'Real-time insights & career analytics' },
+  { icon: 'notifications', label: 'Never miss a deadline or follow-up' },
 ];
 
 /* ── Pre-generated stable particle configurations at file scope (avoids Math.random inside component render/useMemo) ── */
 const STATIC_PARTICLES = Array.from({ length: 22 }, (_, i) => ({
-  id:       i,
-  left:     `${Math.random() * 100}%`,
-  top:      `${Math.random() * 100}%`,
-  size:     `${2 + Math.random() * 3}px`,
-  delay:    `${Math.random() * 6}s`,
+  id: i,
+  left: `${Math.random() * 100}%`,
+  top: `${Math.random() * 100}%`,
+  size: `${2 + Math.random() * 3}px`,
+  delay: `${Math.random() * 6}s`,
   duration: `${5 + Math.random() * 8}s`,
-  opacity:  0.2 + Math.random() * 0.5,
+  opacity: 0.2 + Math.random() * 0.5,
 }));
 
 /* ── Main Auth Component ─────────────────────────────────── */
 const Auth = ({ onAuthSuccess, isDark, setIsDark }) => {
-  const [isLogin,   setIsLogin]   = useState(true);
-  const [formData,  setFormData]  = useState({ name: '', email: '', password: '' });
-  const [showPass,  setShowPass]  = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
+  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [showPass, setShowPass] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [animating, setAnimating] = useState(false);
-  const [focused,   setFocused]   = useState('');
+  const [focused, setFocused] = useState('');
   const particles = STATIC_PARTICLES;
 
   const [mounted, setMounted] = useState(false);
@@ -105,20 +105,20 @@ const Auth = ({ onAuthSuccess, isDark, setIsDark }) => {
       {/* ── Floating particles ───────────────────────────── */}
       {particles.map(p => (
         <Particle key={p.id} style={{
-          left:            p.left,
-          top:             p.top,
-          width:           p.size,
-          height:          p.size,
-          opacity:         p.opacity,
-          animationDelay:  p.delay,
+          left: p.left,
+          top: p.top,
+          width: p.size,
+          height: p.size,
+          opacity: p.opacity,
+          animationDelay: p.delay,
           animationDuration: p.duration,
         }} />
       ))}
 
       {/* ── Big background orbs ──────────────────────────── */}
       <div className="auth-orb auth-orb--violet" />
-      <div className="auth-orb auth-orb--blue"   />
-      <div className="auth-orb auth-orb--cyan"   />
+      <div className="auth-orb auth-orb--blue" />
+      <div className="auth-orb auth-orb--cyan" />
 
       {/* ═══════════════════════════════════════════════════
           SPLIT LAYOUT  |  hero panel  +  form panel
@@ -204,7 +204,7 @@ const Auth = ({ onAuthSuccess, isDark, setIsDark }) => {
           <div className={`auth-form-wrap ${animating ? 'auth-form-wrap--exit' : 'auth-form-wrap--enter'}`}>
             <div className="auth-form-header">
               <h2 className="auth-form-title">
-                {isLogin ? 'Welcome back 👋' : 'Create account 🚀'}
+                {isLogin ? 'Welcome back' : 'Create account '}
               </h2>
               <p className="auth-form-sub">
                 {isLogin
@@ -225,16 +225,16 @@ const Auth = ({ onAuthSuccess, isDark, setIsDark }) => {
             <div className="auth-social-row">
               <button type="button" className="auth-social-btn" title="Continue with Google">
                 <svg viewBox="0 0 24 24" width="18" height="18">
-                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                 </svg>
                 Continue with Google
               </button>
               <button type="button" className="auth-social-btn" title="Continue with GitHub">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                  <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                  <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
                 </svg>
                 Continue with GitHub
               </button>
@@ -330,17 +330,17 @@ const Auth = ({ onAuthSuccess, isDark, setIsDark }) => {
                         className="auth-strength__bar"
                         style={{
                           background: i < Math.min(Math.ceil(formData.password.length / 3), 4)
-                            ? formData.password.length < 6  ? '#f43f5e'
-                            : formData.password.length < 10 ? '#f59e0b'
-                            : '#10b981'
+                            ? formData.password.length < 6 ? '#f43f5e'
+                              : formData.password.length < 10 ? '#f59e0b'
+                                : '#10b981'
                             : undefined
                         }}
                       />
                     ))}
                     <span className="auth-strength__label">
-                      {formData.password.length < 6  ? 'Weak'
-                       : formData.password.length < 10 ? 'Fair'
-                       : 'Strong'}
+                      {formData.password.length < 6 ? 'Weak'
+                        : formData.password.length < 10 ? 'Fair'
+                          : 'Strong'}
                     </span>
                   </div>
                 )}

@@ -9,6 +9,7 @@ import AddNew from './components/AddNew';
 import Profile from './components/Profile';
 import Auth from './components/Auth';
 import Notes from './components/Notes';
+import Compare from './components/Compare';
 import { getApplications, saveApplications } from './utils/helpers';
 import './App.css';
 
@@ -46,6 +47,7 @@ const getRoute = (hash) => {
   if (path === 'notes') return { page: 'notes' };
   if (path === 'add-new') return { page: 'add-new' };
   if (path === 'profile') return { page: 'profile' };
+  if (path === 'compare') return { page: 'compare' };
 
   return { page: 'dashboard' };
 };
@@ -61,13 +63,21 @@ function App() {
   });
 
   const [profile, setProfile] = useState(() => {
-    return JSON.parse(localStorage.getItem("internflow_profile")) || {
+    const stored = JSON.parse(localStorage.getItem("internflow_profile"));
+    if (stored) {
+      if (!stored.skills) {
+        stored.skills = ['Figma', 'Wireframing', 'Prototyping', 'User Research', 'HTML/CSS'];
+      }
+      return stored;
+    }
+    return {
       name: "Sarah Jenkins",
       role: "UX Design Intern Candidate",
       email: "sarah.j@example.com",
       location: "San Francisco, CA",
       education: "California College of the Arts",
-      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150"
+      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150",
+      skills: ['Figma', 'Wireframing', 'Prototyping', 'User Research', 'HTML/CSS']
     };
   });
 
@@ -206,7 +216,7 @@ function App() {
           title={
             route.page === 'profile'
               ? 'My Profile'
-              : route.page === 'add-new'
+              : route.page === 'add-new' || route.page === 'compare'
                 ? ' '
                 : undefined
           }
@@ -269,6 +279,14 @@ function App() {
             onUpdateProfile={updateProfile}
             showToast={showToast}
             onSignOut={handleSignOut}
+          />
+        )}
+
+        {route.page === 'compare' && (
+          <Compare
+            applications={applications}
+            profile={profile}
+            showToast={showToast}
           />
         )}
       </main>
