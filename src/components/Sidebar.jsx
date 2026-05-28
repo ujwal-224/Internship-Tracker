@@ -6,6 +6,7 @@ function Sidebar({ currentPage, isSidebarOpen, onClose }) {
     { name: 'Applications', path: '#/applications', icon: 'list_alt', id: 'applications' },
     { name: 'Board', path: '#/board', icon: 'view_kanban', id: 'board' },
     { name: 'Notes', path: '#/notes', icon: 'sticky_note_2', id: 'notes' },
+    { name: 'AI Offer Comparison', path: '#/compare', icon: 'compare_arrows', id: 'compare' },
     { name: 'Add New', path: '#/add-new', icon: 'add_circle', id: 'add-new' }
   ];
 

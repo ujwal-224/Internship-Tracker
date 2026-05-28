@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 function Profile({ profile, onUpdateProfile, showToast, onSignOut }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [skills, setSkills] = useState(['Figma', 'Wireframing', 'Prototyping', 'User Research', 'HTML/CSS']);
+  const skills = profile?.skills || ['Figma', 'Wireframing', 'Prototyping', 'User Research', 'HTML/CSS'];
   const [newSkill, setNewSkill] = useState('');
   const [showSkillInput, setShowSkillInput] = useState(false);
 
@@ -31,6 +31,7 @@ function Profile({ profile, onUpdateProfile, showToast, onSignOut }) {
   const handleSaveDetails = (e) => {
     e.preventDefault();
     const updated = {
+      ...profile,
       name: editName.trim(),
       role: editRole.trim(),
       email: editEmail.trim(),
@@ -47,7 +48,8 @@ function Profile({ profile, onUpdateProfile, showToast, onSignOut }) {
     e.preventDefault();
     const trimmed = newSkill.trim();
     if (trimmed && !skills.includes(trimmed)) {
-      setSkills([...skills, trimmed]);
+      const updatedSkills = [...skills, trimmed];
+      onUpdateProfile({ ...profile, skills: updatedSkills });
       setNewSkill('');
       setShowSkillInput(false);
       showToast(`Added skill: ${trimmed}`);
@@ -55,7 +57,8 @@ function Profile({ profile, onUpdateProfile, showToast, onSignOut }) {
   };
 
   const handleRemoveSkill = (skillToRemove) => {
-    setSkills(skills.filter(s => s !== skillToRemove));
+    const updatedSkills = skills.filter(s => s !== skillToRemove);
+    onUpdateProfile({ ...profile, skills: updatedSkills });
     showToast(`Removed skill: ${skillToRemove}`, 'info');
   };
 
