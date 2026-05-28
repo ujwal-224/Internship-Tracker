@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
-import Launcher from './components/Launcher';
-import Dashboard from './components/Dashboard';
-import Applications from './components/Applications';
-import Board from './components/Board';
-import AddNew from './components/AddNew';
-import Profile from './components/Profile';
-import Auth from './components/Auth';
-import Notes from './components/Notes';
-import Compare from './components/Compare';
-import { getApplications, saveApplications } from './utils/helpers';
+import Launcher from './pages/Launcher';
+import Dashboard from './pages/Dashboard';
+import Applications from './pages/Applications';
+import Board from './pages/Board';
+import AddNew from './pages/AddNew';
+import Profile from './pages/Profile';
+import Auth from './pages/Auth';
+import Notes from './pages/Notes';
+import Compare from './pages/Compare';
+import { getApplications, saveApplications } from './services/applicationService';
 import './App.css';
 
 // Route Parser Helper

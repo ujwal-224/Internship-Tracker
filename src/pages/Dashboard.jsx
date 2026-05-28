@@ -4,7 +4,7 @@ import {
   getStatusBadgeClass, 
   formatDate 
 } from '../utils/helpers';
-import DetailsModal from './DetailsModal';
+import DetailsModal from '../components/DetailsModal';
 
 function Dashboard({ applications, profile, onUpdateStatus, onDelete }) {
   const [selectedAppId, setSelectedAppId] = useState(null);
