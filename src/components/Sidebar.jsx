@@ -29,9 +29,11 @@ function Sidebar({ currentPage, isSidebarOpen, onClose }) {
       >
         <div className="px-4 mb-8 flex justify-between items-center">
           <div className="flex items-center gap-2.5">
-            <div className="sidebar-logo-wrap">
-              <span className="material-symbols-outlined text-[18px] text-white" style={{ fontVariationSettings: "'FILL' 1" }}>send</span>
-            </div>
+            <img
+              src="/logo.png"
+              alt="InternFlow Logo"
+              className="sidebar-logo-img"
+            />
             <span className="font-bold text-xl bg-gradient-to-r from-violet-600 to-blue-600 dark:from-violet-400 dark:to-blue-400 bg-clip-text text-transparent">InternFlow</span>
           </div>
           <button 
