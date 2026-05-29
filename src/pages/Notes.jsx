@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { getNotes, saveNotes, getCompanyAvatarConfig, formatDate } from '../utils/helpers';
+import { API_BASE_URL } from '../config';
 
 // Helper function to convert markdown-like syntax to React HTML
 const renderMarkdown = (text) => {
@@ -83,10 +84,9 @@ function Notes({ applications = [], onSaveNotes, showToast, userEmail }) {
   const fileInputRef = useRef(null);
   const formFileInputRef = useRef(null);
 
-  // Fetch notes from MongoDB
   useEffect(() => {
     if (userEmail) {
-      fetch(`http://localhost:5001/api/notes/get-notes?email=${encodeURIComponent(userEmail)}`)
+      fetch(`${API_BASE_URL}/api/notes/get-notes?email=${encodeURIComponent(userEmail)}`)
         .then((res) => {
           if (!res.ok) throw new Error('Failed to fetch notes');
           return res.json();
@@ -255,7 +255,7 @@ function Notes({ applications = [], onSaveNotes, showToast, userEmail }) {
     const nextStarred = !note.starred;
 
     try {
-      const response = await fetch(`http://localhost:5001/api/notes/update-note/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/notes/update-note/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -282,7 +282,7 @@ function Notes({ applications = [], onSaveNotes, showToast, userEmail }) {
     const nextHelpful = (note.helpful || 0) + 1;
 
     try {
-      const response = await fetch(`http://localhost:5001/api/notes/update-note/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/notes/update-note/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -315,7 +315,7 @@ function Notes({ applications = [], onSaveNotes, showToast, userEmail }) {
       }
 
       try {
-        const response = await fetch(`http://localhost:5001/api/notes/delete-note/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/api/notes/delete-note/${id}`, {
           method: 'DELETE'
         });
 
@@ -361,7 +361,7 @@ function Notes({ applications = [], onSaveNotes, showToast, userEmail }) {
     };
 
     try {
-      const response = await fetch(`http://localhost:5001/api/notes/update-note/${recordingNoteId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/notes/update-note/${recordingNoteId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -410,7 +410,7 @@ function Notes({ applications = [], onSaveNotes, showToast, userEmail }) {
       const nextAttachments = [...(selectedNote.attachments || []), { name: file.name, url: dataUrl }];
 
       try {
-        const response = await fetch(`http://localhost:5001/api/notes/update-note/${selectedNote.id}`, {
+        const response = await fetch(`${API_BASE_URL}/api/notes/update-note/${selectedNote.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
@@ -514,7 +514,7 @@ function Notes({ applications = [], onSaveNotes, showToast, userEmail }) {
     };
 
     try {
-      const response = await fetch('http://localhost:5001/api/notes/add-note', {
+      const response = await fetch(`${API_BASE_URL}/api/notes/add-note`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -572,7 +572,7 @@ function Notes({ applications = [], onSaveNotes, showToast, userEmail }) {
     };
 
     try {
-      const response = await fetch(`http://localhost:5001/api/notes/update-note/${selectedNote.id || selectedNote._id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/notes/update-note/${selectedNote.id || selectedNote._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

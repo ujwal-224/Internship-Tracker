@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { signInWithGoogle } from '../firebase';
+import { API_BASE_URL } from '../config';
 
 /* ── Floating particle component ─────────────────────────── */
 const Particle = ({ style }) => (
@@ -83,8 +84,8 @@ const Auth = ({ onAuthSuccess, isDark, setIsDark }) => {
     setErrorMsg('');
 
     const endpoint = isLogin 
-      ? 'http://localhost:5001/api/users/login' 
-      : 'http://localhost:5001/api/users/register';
+      ? `${API_BASE_URL}/api/users/login` 
+      : `${API_BASE_URL}/api/users/register`;
 
     const body = isLogin 
       ? { email: formData.email, password: formData.password }
@@ -120,7 +121,7 @@ const Auth = ({ onAuthSuccess, isDark, setIsDark }) => {
       const result = await signInWithGoogle();
       const user = result.user;
       
-      const response = await fetch('http://localhost:5001/api/users/google-login', {
+      const response = await fetch(`${API_BASE_URL}/api/users/google-login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

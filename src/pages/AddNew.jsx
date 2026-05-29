@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { formatInrSalary } from '../utils/helpers';
+import { API_BASE_URL } from '../config';
 
 function AddNew({ onAdd, showToast, userEmail }) {
   const [company, setCompany] = useState('');
@@ -34,7 +35,7 @@ function AddNew({ onAdd, showToast, userEmail }) {
     };
 
     try {
-      const response = await fetch('http://localhost:5001/api/applications/add-application', {
+      const response = await fetch(`${API_BASE_URL}/api/applications/add-application`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
