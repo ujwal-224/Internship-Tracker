@@ -42,6 +42,42 @@ router.post("/login", async (req, res) => {
     }
 });
 
+// Google Login / Registration
+router.post("/google-login", async (req, res) => {
+    try {
+        const { email, name, avatar } = req.body;
+        
+        if (!email) {
+            return res.status(400).json({ error: "Email is required" });
+        }
+
+        let user = await User.findOne({ email });
+        let isNewSignUp = false;
+
+        if (!user) {
+            isNewSignUp = true;
+            // Generate a random password since it is required in the schema
+            const randomPassword = "google_" + Math.random().toString(36).substring(2, 15);
+            user = new User({
+                name: name || email.split("@")[0],
+                email,
+                password: randomPassword,
+                avatar: avatar || ""
+            });
+            await user.save();
+        }
+
+        res.status(200).json({
+            message: isNewSignUp ? "Registration successful" : "Login successful",
+            isNewSignUp,
+            user: { id: user._id, name: user.name, email: user.email }
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
 router.post("/add-user", async (req, res) => {
     try {
         const newUser = new User(req.body);
