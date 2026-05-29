@@ -1,29 +1,78 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 function Profile({ profile, onUpdateProfile, showToast, onSignOut }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const skills = profile?.skills || ['Figma', 'Wireframing', 'Prototyping', 'User Research', 'HTML/CSS'];
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const skills = profile?.skills || [];
   const [newSkill, setNewSkill] = useState('');
   const [showSkillInput, setShowSkillInput] = useState(false);
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        showToast("File size must be under 5MB", "error");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        const updated = {
+          ...profile,
+          resume: {
+            name: file.name,
+            size: (file.size / (1024 * 1024)).toFixed(1) + " MB",
+            uploadedAt: new Date().toLocaleDateString(),
+            dataUrl: reader.result
+          }
+        };
+        onUpdateProfile(updated);
+        showToast("Resume uploaded successfully!");
+      };
+      reader.onerror = () => {
+        showToast("Error reading file", "error");
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleViewResume = () => {
+    if (profile?.resume?.dataUrl) {
+      const link = document.createElement("a");
+      link.href = profile.resume.dataUrl;
+      link.download = profile.resume.name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      showToast("No resume file data available", "error");
+    }
+  };
+
+  const handleDeleteResume = () => {
+    const updated = {
+      ...profile,
+      resume: null
+    };
+    onUpdateProfile(updated);
+    showToast("Resume removed", "info");
+  };
 
   // Edit Modal Form States
-  const [editName, setEditName] = useState(profile?.name || 'Sarah Jenkins');
-  const [editRole, setEditRole] = useState(profile?.role || 'UX Design Intern Candidate');
-  const [editEmail, setEditEmail] = useState(profile?.email || 'sarah.j@example.com');
-  const [editLocation, setEditLocation] = useState(profile?.location || 'San Francisco, CA');
-  const [editEducation, setEditEducation] = useState(profile?.education || 'California College of the Arts');
-  const [editAvatar, setEditAvatar] = useState(profile?.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150');
-
-  // Toggle Settings States
-  const [emailNotifications, setEmailNotifications] = useState(true);
-  const [publicProfile, setPublicProfile] = useState(false);
+  const [editName, setEditName] = useState(profile?.name || '');
+  const [editRole, setEditRole] = useState(profile?.role || '');
+  const [editEmail, setEditEmail] = useState(profile?.email || '');
+  const [editLocation, setEditLocation] = useState(profile?.location || '');
+  const [editEducation, setEditEducation] = useState(profile?.education || '');
+  const [editAvatar, setEditAvatar] = useState(profile?.avatar || '');
 
   const openModal = () => {
     setEditName(profile?.name || '');
     setEditRole(profile?.role || '');
     setEditEmail(profile?.email || '');
-    setEditLocation(profile?.location || 'San Francisco, CA');
-    setEditEducation(profile?.education || 'California College of the Arts');
+    setEditLocation(profile?.location || '');
+    setEditEducation(profile?.education || '');
     setEditAvatar(profile?.avatar || '');
     setIsModalOpen(true);
   };
@@ -81,12 +130,12 @@ function Profile({ profile, onUpdateProfile, showToast, onSignOut }) {
             {/* Profile Content */}
             <div className="px-6 pb-6 flex flex-col items-center text-center">
               <div className="relative -mt-12 mb-4">
-                <img 
-                  id="profile-card-avatar" 
-                  alt="Avatar" 
-                  className="w-24 h-24 rounded-full border-4 border-white dark:border-slate-900 object-cover shadow-sm" 
-                  src={profile?.avatar || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150"}
-                />
+                <div 
+                  id="profile-card-avatar"
+                  className="w-24 h-24 rounded-full border-4 border-white dark:border-slate-900 bg-violet-600 text-white flex items-center justify-center font-extrabold text-3xl shadow-md cursor-default select-none animate-fade-in"
+                >
+                  {(profile?.name || 'U').charAt(0).toUpperCase()}
+                </div>
                 <button 
                   onClick={openModal} 
                   className="absolute bottom-0 right-0 p-1.5 bg-violet-600 hover:bg-violet-700 text-white rounded-full shadow-md transition-transform active:scale-95 flex items-center justify-center"
@@ -95,24 +144,24 @@ function Profile({ profile, onUpdateProfile, showToast, onSignOut }) {
                 </button>
               </div>
               <h3 id="profile-card-name" className="text-xl font-bold text-slate-900 dark:text-slate-100 font-display">
-                {profile?.name || "Sarah Jenkins"}
+                {profile?.name || "Not specified"}
               </h3>
               <p id="profile-card-role" className="text-sm font-semibold text-violet-600 dark:text-violet-400 mt-1">
-                {profile?.role || "UX Design Intern Candidate"}
+                {profile?.role || "Not specified"}
               </p>
               
               <div className="w-full border-t border-slate-100 dark:border-slate-800/60 my-4 pt-4 flex flex-col gap-3 text-left">
                 <div className="flex items-center gap-3 text-slate-600 dark:text-slate-400">
                   <span className="material-symbols-outlined text-[18px] text-slate-400">location_on</span>
-                  <span id="profile-card-location" className="text-sm">{profile?.location || "San Francisco, CA"}</span>
+                  <span id="profile-card-location" className="text-sm">{profile?.location || "Not specified"}</span>
                 </div>
                 <div className="flex items-center gap-3 text-slate-600 dark:text-slate-400">
                   <span className="material-symbols-outlined text-[18px] text-slate-400">school</span>
-                  <span id="profile-card-education" className="text-sm font-medium">{profile?.education || "California College of the Arts"}</span>
+                  <span id="profile-card-education" className="text-sm font-medium">{profile?.education || "Not specified"}</span>
                 </div>
                 <div className="flex items-center gap-3 text-slate-600 dark:text-slate-400">
                   <span className="material-symbols-outlined text-[18px] text-slate-400">mail</span>
-                  <span id="profile-card-email" className="text-sm truncate">{profile?.email || "sarah.j@example.com"}</span>
+                  <span id="profile-card-email" className="text-sm truncate">{profile?.email || "Not specified"}</span>
                 </div>
               </div>
               
@@ -192,40 +241,51 @@ function Profile({ profile, onUpdateProfile, showToast, onSignOut }) {
               </div>
             </div>
             
-            {/* Resume File list item */}
-            <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800">
-              <div className="flex items-center gap-3">
-                <span className="bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 text-xs font-bold px-2.5 py-1 rounded">PDF</span>
-                <div className="overflow-hidden">
-                  <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">Sarah_Jenkins_UX_Resume_2024.pdf</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Uploaded 2 days ago • 1.2 MB</p>
+            {profile?.resume ? (
+              /* Resume File list item */
+              <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800">
+                <div className="flex items-center gap-3">
+                  <span className="bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 text-xs font-bold px-2.5 py-1 rounded">PDF</span>
+                  <div className="overflow-hidden">
+                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">{profile.resume.name}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Uploaded {profile.resume.uploadedAt} • {profile.resume.size}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button 
+                    onClick={handleViewResume}
+                    className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                    title="Download/View Resume"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">visibility</span>
+                  </button>
+                  <button 
+                    onClick={handleDeleteResume}
+                    className="p-2 text-red-400 hover:text-red-600 transition-colors"
+                    title="Delete Resume"
+                  >
+                    <span className="material-symbols-outlined text-[20px]">delete</span>
+                  </button>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <button 
-                  onClick={() => showToast("Downloading resume (simulation)...")}
-                  className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
-                >
-                  <span className="material-symbols-outlined text-[20px]">visibility</span>
-                </button>
-                <button 
-                  onClick={() => showToast("Resume deleted (simulation)...", "error")}
-                  className="p-2 text-red-400 hover:text-red-600 transition-colors"
-                >
-                  <span className="material-symbols-outlined text-[20px]">delete</span>
-                </button>
+            ) : (
+              /* Upload Box */
+              <div 
+                onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                className="border-2 border-dashed border-slate-200 dark:border-slate-800 hover:border-violet-500 dark:hover:border-violet-400 rounded-xl p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-colors bg-slate-50/20 dark:bg-slate-900/20"
+              >
+                <span className="material-symbols-outlined text-4xl text-slate-400 mb-2">cloud_upload</span>
+                <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Click to upload or drag and drop</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">PDF, Word Document up to 5MB</p>
               </div>
-            </div>
-            
-            {/* Upload Box */}
-            <div 
-              onClick={() => showToast("File selector opened (simulation)...")}
-              className="border-2 border-dashed border-slate-200 dark:border-slate-800 hover:border-violet-500 dark:hover:border-violet-400 rounded-xl p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-colors bg-slate-50/20 dark:bg-slate-900/20"
-            >
-              <span className="material-symbols-outlined text-4xl text-slate-400 mb-2">cloud_upload</span>
-              <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Click to upload or drag and drop</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">PDF, DOCX up to 5MB</p>
-            </div>
+            )}
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              onChange={handleFileChange} 
+              accept=".pdf,.doc,.docx" 
+              className="hidden" 
+            />
           </div>
 
           {/* Account Settings */}
@@ -240,51 +300,25 @@ function Profile({ profile, onUpdateProfile, showToast, onSignOut }) {
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Update your password to keep your account secure.</p>
                 </div>
                 <button 
-                  onClick={() => showToast("Password edit opened (simulation)...")}
-                  className="text-violet-600 hover:text-violet-700 dark:text-violet-400 font-semibold text-sm"
+                  onClick={() => setIsPasswordModalOpen(true)}
+                  className="text-violet-600 hover:text-violet-700 dark:text-violet-400 font-semibold text-sm cursor-pointer"
                 >
                   Change
                 </button>
               </div>
-              
-              {/* Email Notifications Toggle */}
+
+              {/* Delete Account Row */}
               <div className="flex items-center justify-between">
                 <div>
-                  <h5 className="text-sm font-bold text-slate-900 dark:text-slate-100">Email Notifications</h5>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Receive updates about application statuses and deadlines.</p>
+                  <h5 className="text-sm font-bold text-red-600 dark:text-red-400">Delete Account</h5>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Permanently remove your account and all associated data.</p>
                 </div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input 
-                    type="checkbox" 
-                    checked={emailNotifications} 
-                    onChange={() => {
-                      setEmailNotifications(!emailNotifications);
-                      showToast(!emailNotifications ? "Email notifications enabled" : "Email notifications disabled");
-                    }}
-                    className="sr-only peer"
-                  />
-                  <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-violet-600"></div>
-                </label>
-              </div>
-              
-              {/* Public Profile Toggle */}
-              <div className="flex items-center justify-between">
-                <div>
-                  <h5 className="text-sm font-bold text-slate-900 dark:text-slate-100 font-semibold">Public Profile</h5>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Allow recruiters to find your profile via share link.</p>
-                </div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input 
-                    type="checkbox" 
-                    checked={publicProfile} 
-                    onChange={() => {
-                      setPublicProfile(!publicProfile);
-                      showToast(!publicProfile ? "Public profile enabled" : "Public profile disabled");
-                    }}
-                    className="sr-only peer"
-                  />
-                  <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-violet-600"></div>
-                </label>
+                <button 
+                  onClick={() => setIsDeleteModalOpen(true)}
+                  className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-semibold text-sm cursor-pointer transition-colors"
+                >
+                  Delete
+                </button>
               </div>
             </div>
             
@@ -394,6 +428,220 @@ function Profile({ profile, onUpdateProfile, showToast, onSignOut }) {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Change Password Modal */}
+      {isPasswordModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="relative w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800/80 p-8 transform scale-100 transition-all duration-300 animate-scale-in text-left overflow-hidden">
+            {/* Glowing top line */}
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-violet-600 via-indigo-500 to-cyan-500"></div>
+
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 text-white flex items-center justify-center shadow-lg shadow-violet-500/25">
+                <span className="material-symbols-outlined text-2xl">lock_reset</span>
+              </div>
+              <div className="text-left">
+                <h3 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">Update Password</h3>
+                <p className="text-[10px] font-bold text-violet-600 dark:text-violet-400 uppercase tracking-widest mt-0.5">Secure Your Account</p>
+              </div>
+              <button 
+                type="button" 
+                onClick={() => setIsPasswordModalOpen(false)} 
+                className="ml-auto w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-[20px]">close</span>
+              </button>
+            </div>
+
+            <form 
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const currentPassword = formData.get("currentPassword");
+                const newPassword = formData.get("newPassword");
+                const confirmPassword = formData.get("confirmPassword");
+
+                if (newPassword !== confirmPassword) {
+                  showToast("New passwords do not match", "error");
+                  return;
+                }
+
+                try {
+                  const response = await fetch("http://localhost:5001/api/users/change-password", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                      email: profile?.email,
+                      currentPassword,
+                      newPassword
+                    })
+                  });
+
+                  const data = await response.json();
+                  if (!response.ok) {
+                    throw new Error(data.error || "Failed to update password");
+                  }
+
+                  showToast("Password updated successfully!", "success");
+                  setIsPasswordModalOpen(false);
+                } catch (err) {
+                  showToast(err.message, "error");
+                }
+              }}
+              className="flex flex-col gap-4 text-slate-800 dark:text-slate-100 text-left"
+            >
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-450 dark:text-slate-500 mb-1.5">Current Password</label>
+                <div className="relative flex items-center">
+                  <span className="material-symbols-outlined absolute left-3.5 text-[18px] text-slate-400 dark:text-slate-500 pointer-events-none">lock</span>
+                  <input 
+                    name="currentPassword"
+                    required
+                    type="password"
+                    className="w-full pl-11 pr-4 py-3 border border-slate-205 dark:border-slate-800 rounded-2xl bg-slate-50/50 dark:bg-slate-950/30 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-650 focus:outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 font-body-sm text-body-sm transition-all" 
+                    placeholder="Enter current password"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-455 dark:text-slate-500 mb-1.5">New Password</label>
+                <div className="relative flex items-center">
+                  <span className="material-symbols-outlined absolute left-3.5 text-[18px] text-slate-400 dark:text-slate-500 pointer-events-none">lock_open</span>
+                  <input 
+                    name="newPassword"
+                    required
+                    type="password"
+                    className="w-full pl-11 pr-4 py-3 border border-slate-205 dark:border-slate-800 rounded-2xl bg-slate-50/50 dark:bg-slate-950/30 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-650 focus:outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 font-body-sm text-body-sm transition-all" 
+                    placeholder="Enter new password"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-455 dark:text-slate-500 mb-1.5">Confirm New Password</label>
+                <div className="relative flex items-center">
+                  <span className="material-symbols-outlined absolute left-3.5 text-[18px] text-slate-400 dark:text-slate-500 pointer-events-none">gpp_maybe</span>
+                  <input 
+                    name="confirmPassword"
+                    required
+                    type="password"
+                    className="w-full pl-11 pr-4 py-3 border border-slate-205 dark:border-slate-800 rounded-2xl bg-slate-50/50 dark:bg-slate-950/30 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-650 focus:outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 font-body-sm text-body-sm transition-all" 
+                    placeholder="Confirm new password"
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-4 mt-2 border-t border-slate-100 dark:border-slate-800/80">
+                <button 
+                  type="button" 
+                  onClick={() => setIsPasswordModalOpen(false)} 
+                  className="flex-1 py-3 border border-slate-200 dark:border-slate-850 rounded-2xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-bold transition-all cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  className="flex-1 py-3 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-bold rounded-2xl transition-all shadow-lg shadow-violet-500/20 active:scale-95 text-xs cursor-pointer"
+                >
+                  Update
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Account Confirmation Modal */}
+      {isDeleteModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="relative w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800/80 p-8 overflow-hidden">
+            {/* Red accent top line */}
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-500 via-rose-500 to-pink-500"></div>
+
+            {/* Icon + Title */}
+            <div className="flex items-center gap-4 mb-5">
+              <div className="w-12 h-12 rounded-2xl bg-red-50 dark:bg-red-950/30 text-red-500 flex items-center justify-center shadow-sm border border-red-100 dark:border-red-900/40">
+                <span className="material-symbols-outlined text-2xl">delete_forever</span>
+              </div>
+              <div>
+                <h3 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">Delete Account</h3>
+                <p className="text-[10px] font-bold text-red-500 dark:text-red-400 uppercase tracking-widest mt-0.5">Irreversible Action</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsDeleteModalOpen(false)}
+                className="ml-auto w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-[20px]">close</span>
+              </button>
+            </div>
+
+            {/* Warning message */}
+            <div className="bg-red-50 dark:bg-red-950/20 border border-red-100 dark:border-red-900/40 rounded-2xl p-4 mb-6">
+              <p className="text-sm text-red-700 dark:text-red-300 leading-relaxed">
+                <span className="font-bold">This action cannot be undone.</span> All your applications, notes, and profile data will be permanently deleted from our servers.
+              </p>
+            </div>
+
+            {/* Confirm email field */}
+            <div className="mb-6">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5">
+                Type your email to confirm
+              </label>
+              <div className="relative flex items-center">
+                <span className="material-symbols-outlined absolute left-3.5 text-[18px] text-slate-400 dark:text-slate-500 pointer-events-none">mail</span>
+                <input
+                  id="delete-confirm-email"
+                  type="email"
+                  placeholder={profile?.email || "your@email.com"}
+                  className="w-full pl-11 pr-4 py-3 border border-slate-205 dark:border-slate-800 rounded-2xl bg-slate-50/50 dark:bg-slate-950/30 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-red-500 focus:ring-4 focus:ring-red-500/10 text-sm transition-all"
+                />
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex gap-3 border-t border-slate-100 dark:border-slate-800/80 pt-5">
+              <button
+                type="button"
+                onClick={() => setIsDeleteModalOpen(false)}
+                className="flex-1 py-3 border border-slate-200 dark:border-slate-800 rounded-2xl text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-bold transition-all cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={async () => {
+                  const input = document.getElementById("delete-confirm-email");
+                  if (!input || input.value.trim() !== profile?.email) {
+                    showToast("Email does not match. Please try again.", "error");
+                    return;
+                  }
+                  try {
+                    const res = await fetch("http://localhost:5001/api/users/delete-account", {
+                      method: "DELETE",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ email: profile?.email })
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error || "Failed to delete account");
+                    showToast("Account deleted successfully.", "success");
+                    setIsDeleteModalOpen(false);
+                    setTimeout(() => { if (onSignOut) onSignOut(); }, 1200);
+                  } catch (err) {
+                    showToast(err.message, "error");
+                  }
+                }}
+                className="flex-1 py-3 bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white font-bold rounded-2xl transition-all shadow-lg shadow-red-500/20 active:scale-95 text-xs cursor-pointer"
+              >
+                Delete My Account
+              </button>
+            </div>
           </div>
         </div>
       )}

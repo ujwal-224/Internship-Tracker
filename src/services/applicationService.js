@@ -1,84 +1,6 @@
 // Helpers for InternFlow application
 
-export const DEFAULT_APPLICATIONS = [
-    {
-        id: "1",
-        company: "Stripe",
-        role: "Software Engineering Intern",
-        date: "2025-05-01",
-        status: "Interviewing",
-        location: "Remote",
-        salary: "₹3,735/hr",
-        description: "Expecting proficiency in React, TypeScript, and Node.js. Experience with system design and REST APIs is highly valued.",
-        notes: "Technical round scheduled"
-    },
-    {
-        id: "2",
-        company: "Notion",
-        role: "Product Design Intern",
-        date: "2025-04-28",
-        status: "Applied",
-        location: "San Francisco, CA",
-        salary: "₹3,320/hr",
-        description: "Expecting a strong design portfolio demonstrating product thinking, visual design skills, and high proficiency in Figma.",
-        notes: "Referred by campus recruiter"
-    },
-    {
-        id: "3",
-        company: "Figma",
-        role: "Frontend Engineering Intern",
-        date: "2025-04-20",
-        status: "Offer",
-        location: "New York, NY",
-        salary: "₹4,565/hr",
-        description: "Expecting strong skills in JavaScript/TypeScript, React, WebGL, or Canvas, and a passion for building creative tools.",
-        notes: "Offer letter received"
-    },
-    {
-        id: "4",
-        company: "Airbnb",
-        role: "Data Engineering Intern",
-        date: "2025-04-15",
-        status: "Rejected",
-        location: "Seattle, WA",
-        salary: "₹3,984/hr",
-        description: "Expecting experience with Python, Scala or Java, SQL, Spark/Hadoop, and building reliable data pipelines.",
-        notes: "No feedback provided"
-    },
-    {
-        id: "5",
-        company: "Linear",
-        role: "Software Engineering Intern",
-        date: "2025-05-05",
-        status: "Applied",
-        location: "Remote",
-        salary: "₹3,486/hr",
-        description: "Expecting high attention to detail, proficiency in TypeScript, React, and an interest in productivity workflows.",
-        notes: "Applied via career site"
-    },
-    {
-        id: "6",
-        company: "Vercel",
-        role: "Developer Experience Intern",
-        date: "2025-05-08",
-        status: "Interviewing",
-        location: "Remote",
-        salary: "₹3,735/hr",
-        description: "Expecting proficiency in Next.js, React, modern CSS, and a deep interest in web performance and developer tooling.",
-        notes: "Initial screening scheduled"
-    },
-    {
-        id: "7",
-        company: "GitHub",
-        role: "Open Source Intern",
-        date: "2025-04-10",
-        status: "Rejected",
-        location: "San Francisco, CA",
-        salary: "₹2,905/hr",
-        description: "Expecting experience with Git/GitHub, Ruby on Rails or Go, and active contributions to public open source projects.",
-        notes: "Competitive cycle"
-    }
-];
+export const DEFAULT_APPLICATIONS = [];
 
 export function convertUsdToInr(usdSalary) {
     if (!usdSalary) return '';
@@ -242,62 +164,7 @@ export function getAppMilestones(app) {
     return milestones;
 }
 
-export const DEFAULT_NOTES = [
-    {
-        id: "note-1",
-        company: "Google",
-        role: "Software Engineering Intern",
-        round: "Technical",
-        date: "2026-05-20",
-        difficulty: "Medium",
-        status: "Selected",
-        skills: ["Algorithms", "Graphs", "C++"],
-        notes: "Focused heavily on graph algorithms and system design basics. The interviewer was friendly but very precise about time complexity. Used DFS to solve cycle detection.",
-        questions: "1. How do you detect a cycle in a directed graph?\n2. Design an LRU Cache with O(1) get and put operations.",
-        tips: "Always explain your trade-offs between space and time complexity before writing code. Practice talking out loud.",
-        mistakes: "Initially forgot to check for cyclic references in node visits, but corrected it during walkthrough.",
-        starred: true,
-        confidence: 4,
-        voiceNote: null,
-        attachments: []
-    },
-    {
-        id: "note-2",
-        company: "Stripe",
-        role: "Backend Engineer Intern",
-        round: "HR",
-        date: "2026-05-18",
-        difficulty: "Easy",
-        status: "Selected",
-        skills: ["Behavioral", "System Design", "APIs"],
-        notes: "Discussed past projects, teamwork challenges, and why I wanted to join Stripe. They really value clean code, API design principles, and strong collaboration skills.",
-        questions: "1. Tell me about a time you resolved a major bug in production under tight deadlines.\n2. Why Stripe and how would you design a simple idempotent payment API?",
-        tips: "Structure your answers using the STAR method (Situation, Task, Action, Result). Highlight your specific contribution.",
-        mistakes: "Spent too much time detailing the technical background of my project instead of focusing on what I did to solve it.",
-        starred: false,
-        confidence: 5,
-        voiceNote: null,
-        attachments: []
-    },
-    {
-        id: "note-3",
-        company: "Vercel",
-        role: "Frontend Engineer Intern",
-        round: "OA",
-        date: "2026-05-12",
-        difficulty: "Hard",
-        status: "Waiting",
-        skills: ["Next.js", "React", "TypeScript"],
-        notes: "Coding assignment with performance-oriented questions. Needed to build a search-as-you-type component with debouncing and virtualized list. Focus on minimizing layout shifts.",
-        questions: "1. Implement a search input with custom hook for debouncing and caching search results.\n2. Explain the difference between Server Components and Client Components in React 19.",
-        tips: "Make sure Layout Shift (CLS) is minimized. Write clean TypeScript types and avoid using 'any'.",
-        mistakes: "Forgot to clear the debounce timer in the useEffect cleanup function, which could cause a memory leak. Caught it later.",
-        starred: true,
-        confidence: 3,
-        voiceNote: null,
-        attachments: []
-    }
-];
+export const DEFAULT_NOTES = [];
 
 export function getNotes() {
     let notes = JSON.parse(localStorage.getItem("careerpilot_notes"));

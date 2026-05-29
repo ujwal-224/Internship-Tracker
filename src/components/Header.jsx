@@ -87,10 +87,6 @@ function Header({
             {isDark ? 'light_mode' : 'dark_mode'}
           </span>
         </button>
-        <button className="w-10 h-10 flex items-center justify-center rounded-full text-slate-500 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all relative">
-          <span className="material-symbols-outlined">notifications</span>
-          <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white dark:ring-slate-900"></span>
-        </button>
         {/* Avatar + Dropdown Menu */}
         <div className="relative" ref={avatarRef}>
           <button
@@ -99,13 +95,8 @@ function Header({
             className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer hover:ring-2 hover:ring-violet-400 transition-all"
             title="Account"
           >
-            <div className="w-9 h-9 rounded-full overflow-hidden bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-[10px]">
-              <img 
-                id="header-avatar" 
-                className="w-full h-full object-cover" 
-                src={profile?.avatar || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150"} 
-                alt="Avatar"
-              />
+            <div className="w-9 h-9 rounded-full bg-violet-600 text-white flex items-center justify-center font-bold text-sm shadow-sm">
+              {(profile?.name || 'U').charAt(0).toUpperCase()}
             </div>
           </button>
 
