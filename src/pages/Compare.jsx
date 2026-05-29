@@ -288,7 +288,7 @@ function SearchableSelect({ label, value, options, onChange, placeholder, unique
         {selectedOption ? (
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-            <span className="font-bold text-slate-900 dark:text-slate-150">{selectedOption.company}</span>
+            <span className="font-bold text-slate-900 dark:text-slate-100">{selectedOption.company}</span>
             <span className="text-slate-400 dark:text-slate-500 text-xs font-semibold truncate max-w-[120px]">
               • {selectedOption.role}
             </span>
