@@ -11,6 +11,7 @@ import Auth from './pages/Auth';
 import Notes from './pages/Notes';
 import Compare from './pages/Compare';
 import { getApplications, saveApplications } from './services/applicationService';
+import { API_BASE_URL } from './config';
 import './App.css';
 
 // Route Parser Helper
@@ -108,10 +109,9 @@ function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // Fetch applications from MongoDB when authenticated
   useEffect(() => {
     if (isAuthenticated && profile?.email) {
-      fetch(`http://localhost:5001/api/applications/get-applications?email=${encodeURIComponent(profile.email)}`)
+      fetch(`${API_BASE_URL}/api/applications/get-applications?email=${encodeURIComponent(profile.email)}`)
         .then((res) => {
           if (!res.ok) throw new Error('Failed to fetch applications');
           return res.json();
@@ -132,12 +132,11 @@ function App() {
     }
   }, [isAuthenticated, profile?.email]);
 
-  // Fetch user profile from MongoDB when authenticated
   useEffect(() => {
     const authUser = localStorage.getItem("internflow_auth_user");
     if (isAuthenticated && authUser) {
       const email = JSON.parse(authUser).email;
-      fetch(`http://localhost:5001/api/users/profile?email=${encodeURIComponent(email)}`)
+      fetch(`${API_BASE_URL}/api/users/profile?email=${encodeURIComponent(email)}`)
         .then((res) => {
           if (!res.ok) throw new Error('Failed to fetch profile');
           return res.json();
@@ -185,7 +184,7 @@ function App() {
 
     // Persist to MongoDB
     try {
-      await fetch(`http://localhost:5001/api/applications/update-application/${appId}`, {
+      await fetch(`${API_BASE_URL}/api/applications/update-application/${appId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus })
@@ -203,7 +202,7 @@ function App() {
 
     // Persist to MongoDB
     try {
-      await fetch(`http://localhost:5001/api/applications/delete-application/${appId}`, {
+      await fetch(`${API_BASE_URL}/api/applications/delete-application/${appId}`, {
         method: 'DELETE'
       });
     } catch (err) {
@@ -220,7 +219,7 @@ function App() {
 
     // Persist to MongoDB
     try {
-      await fetch(`http://localhost:5001/api/applications/update-application/${appId}`, {
+      await fetch(`${API_BASE_URL}/api/applications/update-application/${appId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ notes: newNotes })
@@ -241,7 +240,7 @@ function App() {
     localStorage.setItem("internflow_profile", JSON.stringify(updatedProfile));
 
     try {
-      const response = await fetch("http://localhost:5001/api/users/profile", {
+      const response = await fetch(`${API_BASE_URL}/api/users/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"

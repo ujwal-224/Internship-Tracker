@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { API_BASE_URL } from '../config';
 
 function Profile({ profile, onUpdateProfile, showToast, onSignOut }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -470,7 +471,7 @@ function Profile({ profile, onUpdateProfile, showToast, onSignOut }) {
                 }
 
                 try {
-                  const response = await fetch("http://localhost:5001/api/users/change-password", {
+                  const response = await fetch(`${API_BASE_URL}/api/users/change-password`, {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json"
@@ -623,7 +624,7 @@ function Profile({ profile, onUpdateProfile, showToast, onSignOut }) {
                     return;
                   }
                   try {
-                    const res = await fetch("http://localhost:5001/api/users/delete-account", {
+                    const res = await fetch(`${API_BASE_URL}/api/users/delete-account`, {
                       method: "DELETE",
                       headers: { "Content-Type": "application/json" },
                       body: JSON.stringify({ email: profile?.email })
