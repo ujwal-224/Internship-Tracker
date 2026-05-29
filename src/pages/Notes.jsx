@@ -29,8 +29,8 @@ const renderMarkdown = (text) => {
   return <div dangerouslySetInnerHTML={{ __html: formatted }} />;
 };
 
-function Notes({ applications = [], onSaveNotes, showToast }) {
-  const [notes, setNotes] = useState(() => getNotes());
+function Notes({ applications = [], onSaveNotes, showToast, userEmail }) {
+  const [notes, setNotes] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   
   // Filter states
@@ -83,12 +83,32 @@ function Notes({ applications = [], onSaveNotes, showToast }) {
   const fileInputRef = useRef(null);
   const formFileInputRef = useRef(null);
 
-  // Save notes whenever the notes state changes
+  // Fetch notes from MongoDB
   useEffect(() => {
-    const customOnly = notes.filter(n => !n.isFromApplication && !n.id.startsWith('app-note-'));
-    saveNotes(customOnly);
+    if (userEmail) {
+      fetch(`http://localhost:5001/api/notes/get-notes?email=${encodeURIComponent(userEmail)}`)
+        .then((res) => {
+          if (!res.ok) throw new Error('Failed to fetch notes');
+          return res.json();
+        })
+        .then((data) => {
+          const mappedData = data.map(n => ({
+            ...n,
+            id: n._id || n.id
+          }));
+          setNotes(mappedData);
+        })
+        .catch((err) => {
+          console.error("Error loading notes:", err);
+          showToast("Error loading notes from database", "error");
+        });
+    } else {
+      setNotes([]);
+    }
+  }, [userEmail]);
 
-    // Save app notes metadata in local storage
+  // Save app notes metadata in local storage
+  useEffect(() => {
     const appOnly = notes.filter(n => n.isFromApplication || n.id.startsWith('app-note-'));
     const appMeta = {};
     appOnly.forEach(n => {
@@ -228,37 +248,61 @@ function Notes({ applications = [], onSaveNotes, showToast }) {
   };
 
   // Toggle Favorite/Star status
-  const toggleStar = (id, e) => {
+  const toggleStar = async (id, e) => {
     e.stopPropagation();
-    setNotes(prevNotes => 
-      prevNotes.map(n => {
-        if (n.id === id) {
-          const nextStarred = !n.starred;
-          showToast(nextStarred ? "Bookmarked experience!" : "Removed bookmark", "info");
-          return { ...n, starred: nextStarred };
-        }
-        return n;
-      })
-    );
+    const note = notes.find(n => n.id === id);
+    if (!note) return;
+    const nextStarred = !note.starred;
+
+    try {
+      const response = await fetch(`http://localhost:5001/api/notes/update-note/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ starred: nextStarred })
+      });
+
+      if (!response.ok) throw new Error('Failed to star note');
+
+      setNotes(prevNotes => 
+        prevNotes.map(n => n.id === id ? { ...n, starred: nextStarred } : n)
+      );
+      showToast(nextStarred ? "Bookmarked experience!" : "Removed bookmark", "info");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   // Handle helpful/upvote button
-  const handleHelpfulIncrement = (id, e) => {
+  const handleHelpfulIncrement = async (id, e) => {
     e.stopPropagation();
-    setNotes(prevNotes => 
-      prevNotes.map(n => {
-        if (n.id === id) {
-          const currentHelpful = n.helpful || 0;
-          showToast("Marked note as helpful!", "success");
-          return { ...n, helpful: currentHelpful + 1 };
-        }
-        return n;
-      })
-    );
+    const note = notes.find(n => n.id === id);
+    if (!note) return;
+    const nextHelpful = (note.helpful || 0) + 1;
+
+    try {
+      const response = await fetch(`http://localhost:5001/api/notes/update-note/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ helpful: nextHelpful })
+      });
+
+      if (!response.ok) throw new Error('Failed to increment helpful count');
+
+      setNotes(prevNotes => 
+        prevNotes.map(n => n.id === id ? { ...n, helpful: nextHelpful } : n)
+      );
+      showToast("Marked note as helpful!", "success");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   // Delete note handler
-  const handleDeleteNote = (id, e) => {
+  const handleDeleteNote = async (id, e) => {
     e.stopPropagation();
     if (window.confirm("Are you sure you want to delete this interview note?")) {
       const targetNote = notes.find(n => n.id === id);
@@ -269,8 +313,20 @@ function Notes({ applications = [], onSaveNotes, showToast }) {
           onSaveNotes(appId, '');
         }
       }
-      setNotes(prev => prev.filter(n => n.id !== id));
-      showToast("Note deleted successfully", "error");
+
+      try {
+        const response = await fetch(`http://localhost:5001/api/notes/delete-note/${id}`, {
+          method: 'DELETE'
+        });
+
+        if (!response.ok) throw new Error('Failed to delete note');
+
+        setNotes(prev => prev.filter(n => n.id !== id));
+        showToast("Note deleted successfully", "error");
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to delete note from database", "error");
+      }
     }
   };
 
@@ -287,7 +343,7 @@ function Notes({ applications = [], onSaveNotes, showToast }) {
   };
 
   // Voice note simulation: stops recording and stores a mock transcription
-  const stopVoiceRecording = (e) => {
+  const stopVoiceRecording = async (e) => {
     e.stopPropagation();
     if (!isRecording) return;
     clearInterval(recordingIntervalRef.current);
@@ -299,25 +355,42 @@ function Notes({ applications = [], onSaveNotes, showToast }) {
       "We spent 15 minutes reviewing React 19 features including Server Actions, useActionState, and optimization of virtual rendering."
     ];
     const randomTranscript = transcripts[Math.floor(Math.random() * transcripts.length)];
-    
-    setNotes(prevNotes => 
-      prevNotes.map(n => {
-        if (n.id === recordingNoteId) {
-          return {
-            ...n,
-            voiceNote: {
-              duration: formatTime(recordingSeconds),
-              transcription: randomTranscript
-            }
-          };
-        }
-        return n;
-      })
-    );
-    
-    setIsRecording(false);
-    setRecordingNoteId(null);
-    showToast("Voice experience recorded and transcribed!", "success");
+    const voiceNoteData = {
+      duration: formatTime(recordingSeconds),
+      transcription: randomTranscript
+    };
+
+    try {
+      const response = await fetch(`http://localhost:5001/api/notes/update-note/${recordingNoteId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ voiceNote: voiceNoteData })
+      });
+
+      if (!response.ok) throw new Error('Failed to save voice note');
+
+      setNotes(prevNotes => 
+        prevNotes.map(n => {
+          if (n.id === recordingNoteId) {
+            return {
+              ...n,
+              voiceNote: voiceNoteData
+            };
+          }
+          return n;
+        })
+      );
+      
+      setIsRecording(false);
+      setRecordingNoteId(null);
+      showToast("Voice experience recorded and transcribed!", "success");
+    } catch (err) {
+      console.error(err);
+      setIsRecording(false);
+      setRecordingNoteId(null);
+    }
   };
 
   // File attachments simulation (Base64 conversion)
@@ -332,22 +405,31 @@ function Notes({ applications = [], onSaveNotes, showToast }) {
     if (!file || !selectedNote) return;
 
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       const dataUrl = event.target.result;
-      setNotes(prevNotes => 
-        prevNotes.map(n => {
-          if (n.id === selectedNote.id) {
-            const currentAttachments = n.attachments || [];
-            return {
-              ...n,
-              attachments: [...currentAttachments, { name: file.name, url: dataUrl }]
-            };
-          }
-          return n;
-        })
-      );
-      showToast(`Attached ${file.name} successfully!`, "success");
-      setSelectedNote(null);
+      const nextAttachments = [...(selectedNote.attachments || []), { name: file.name, url: dataUrl }];
+
+      try {
+        const response = await fetch(`http://localhost:5001/api/notes/update-note/${selectedNote.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ attachments: nextAttachments })
+        });
+
+        if (!response.ok) throw new Error('Failed to upload attachment');
+
+        setNotes(prevNotes => 
+          prevNotes.map(n => n.id === selectedNote.id ? { ...n, attachments: nextAttachments } : n)
+        );
+        showToast(`Attached ${file.name} successfully!`, "success");
+        setSelectedNote(null);
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to upload attachment to database", "error");
+        setSelectedNote(null);
+      }
     };
     reader.readAsDataURL(file);
   };
@@ -403,15 +485,15 @@ function Notes({ applications = [], onSaveNotes, showToast }) {
   };
 
   // Submit new note
-  const handleAddNoteSubmit = (e) => {
+  const handleAddNoteSubmit = async (e) => {
     e.preventDefault();
     const skillsArray = formSkills
       .split(',')
       .map(s => s.trim())
       .filter(s => s.length > 0);
 
-    const newNote = {
-      id: `note-${Date.now()}`,
+    const newNoteData = {
+      userEmail: userEmail || '',
       company: formCompany.trim(),
       role: formRole.trim(),
       round: formRound,
@@ -431,14 +513,35 @@ function Notes({ applications = [], onSaveNotes, showToast }) {
       attachments: formAttachments
     };
 
-    setNotes(prev => [newNote, ...prev]);
-    setIsAddModalOpen(false);
-    resetForm();
-    showToast("Added new interview note!", "success");
+    try {
+      const response = await fetch('http://localhost:5001/api/notes/add-note', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newNoteData)
+      });
+
+      if (!response.ok) throw new Error('Failed to save note');
+      
+      const savedNote = await response.json();
+      const mappedNote = {
+        ...savedNote,
+        id: savedNote._id || savedNote.id
+      };
+
+      setNotes(prev => [mappedNote, ...prev]);
+      setIsAddModalOpen(false);
+      resetForm();
+      showToast("Added new interview note!", "success");
+    } catch (err) {
+      console.error(err);
+      showToast("Failed to save note to database", "error");
+    }
   };
 
   // Submit edited note
-  const handleEditNoteSubmit = (e) => {
+  const handleEditNoteSubmit = async (e) => {
     e.preventDefault();
     const skillsArray = formSkills
       .split(',')
@@ -452,33 +555,50 @@ function Notes({ applications = [], onSaveNotes, showToast }) {
       onSaveNotes(appId, formNotes.trim());
     }
 
-    setNotes(prev => 
-      prev.map(n => {
-        if (n.id === selectedNote.id) {
-          return {
-            ...n,
-            company: formCompany.trim(),
-            role: formRole.trim(),
-            round: formRound,
-            date: formDate,
-            difficulty: formDifficulty,
-            status: formStatus,
-            skills: skillsArray,
-            notes: formNotes.trim(),
-            questions: formQuestions.trim(),
-            tips: formTips.trim(),
-            mistakes: formMistakes.trim(),
-            confidence: parseInt(formConfidence),
-            attachments: formAttachments
-          };
-        }
-        return n;
-      })
-    );
+    const updatedData = {
+      company: formCompany.trim(),
+      role: formRole.trim(),
+      round: formRound,
+      date: formDate,
+      difficulty: formDifficulty,
+      status: formStatus,
+      skills: skillsArray,
+      notes: formNotes.trim(),
+      questions: formQuestions.trim(),
+      tips: formTips.trim(),
+      mistakes: formMistakes.trim(),
+      confidence: parseInt(formConfidence),
+      attachments: formAttachments
+    };
 
-    setIsEditModalOpen(false);
-    resetForm();
-    showToast("Updated interview note details!", "success");
+    try {
+      const response = await fetch(`http://localhost:5001/api/notes/update-note/${selectedNote.id || selectedNote._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedData)
+      });
+
+      if (!response.ok) throw new Error('Failed to update note');
+
+      const savedNote = await response.json();
+      const mappedNote = {
+        ...savedNote,
+        id: savedNote._id || savedNote.id
+      };
+
+      setNotes(prev => 
+        prev.map(n => n.id === selectedNote.id ? mappedNote : n)
+      );
+
+      setIsEditModalOpen(false);
+      resetForm();
+      showToast("Updated interview note details!", "success");
+    } catch (err) {
+      console.error(err);
+      showToast("Failed to update note in database", "error");
+    }
   };
 
   // Triggering the revision study mode
@@ -609,31 +729,7 @@ function Notes({ applications = [], onSaveNotes, showToast }) {
         </div>
 
         {/* ── SMART FEATURES BENTO GRID ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          
-          {/* Bento Card 1: Quick Revision Mode trigger */}
-          <div className="glass-card rounded-2xl p-6 flex flex-col justify-between bg-gradient-to-br from-violet-600/10 via-blue-600/5 to-transparent border border-violet-500/20 shadow-sm relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-violet-600/10 rounded-full blur-2xl transform translate-x-8 -translate-y-8 group-hover:bg-violet-600/20 transition-all duration-300"></div>
-            <div>
-              <span className="shimmer-badge px-2.5 py-1 text-[10px] rounded-full uppercase tracking-wider mb-4 font-bold inline-flex items-center">
-                <span className="w-1.5 h-1.5 rounded-full bg-violet-600 dark:bg-violet-400 animate-pulse mr-1"></span>
-                PREPARATION VAULT
-              </span>
-              <h3 className="font-extrabold text-xl text-slate-900 dark:text-white mt-3">Quick Revision Mode</h3>
-              <p className="text-slate-500 dark:text-slate-400 text-xs mt-1.5 leading-relaxed">
-                Launch a distraction-free flashcard deck of interview questions to test your knowledge. Includes progress bar and active timer.
-              </p>
-            </div>
-            <div className="mt-6">
-              <button 
-                onClick={openRevisionMode}
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-bold text-xs rounded-xl shadow-lg shadow-violet-500/20 transition-all hover:scale-[1.02] active:scale-95"
-              >
-                <span className="material-symbols-outlined text-[16px]">school</span>
-                Start Revision Mode
-              </button>
-            </div>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
           {/* Bento Card 2: Skill Clouds and Top Companies */}
           <div className="glass-card rounded-2xl p-6 flex flex-col justify-between">
@@ -708,7 +804,7 @@ function Notes({ applications = [], onSaveNotes, showToast }) {
           </div>
 
           {/* Bento Card 3: Upcoming Revisions & Most Asked Questions */}
-          <div className="glass-card rounded-2xl p-6 flex flex-col justify-between md:col-span-2 lg:col-span-1">
+          <div className="glass-card rounded-2xl p-6 flex flex-col justify-between">
             <div>
               <h3 className="font-bold text-sm uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[18px] text-amber-500">question_answer</span>

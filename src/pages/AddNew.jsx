@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { formatInrSalary } from '../utils/helpers';
 
-function AddNew({ onAdd, showToast }) {
+function AddNew({ onAdd, showToast, userEmail }) {
   const [company, setCompany] = useState('');
   const [role, setRole] = useState('');
   const [location, setLocation] = useState('');
@@ -13,13 +13,13 @@ function AddNew({ onAdd, showToast }) {
   const [recruiterPhone, setRecruiterPhone] = useState('');
   const [notes, setNotes] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formattedSalary = formatInrSalary(salary.trim());
 
     const newApp = {
-      id: Date.now().toString(),
+      userEmail: userEmail || '',
       company: company.trim(),
       role: role.trim(),
       status: status,
@@ -33,13 +33,38 @@ function AddNew({ onAdd, showToast }) {
       notes: notes.trim()
     };
 
-    onAdd(newApp);
-    showToast(`Added ${newApp.company} application successfully!`);
+    try {
+      const response = await fetch('http://localhost:5001/api/applications/add-application', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newApp)
+      });
 
-    // Redirect to dashboard after 1s
-    setTimeout(() => {
-      window.location.hash = '#/dashboard';
-    }, 1000);
+      if (!response.ok) {
+        throw new Error('Failed to save application to the database');
+      }
+
+      const savedApp = await response.json();
+      
+      // Keep frontend compatibility by using _id as the id
+      const appWithId = {
+        ...savedApp,
+        id: savedApp._id || Date.now().toString()
+      };
+
+      onAdd(appWithId);
+      showToast(`Added ${appWithId.company} application successfully!`);
+
+      // Redirect to dashboard after 1s
+      setTimeout(() => {
+        window.location.hash = '#/dashboard';
+      }, 1000);
+    } catch (error) {
+      console.error("Error saving application:", error);
+      showToast("Error adding application to database", "error");
+    }
   };
 
   return (
