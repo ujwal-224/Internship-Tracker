@@ -1,6 +1,6 @@
-# Internship Tracker
+# Internflow
 
-## Internship Tracker — Internship & Job Application Tracker
+## Interflow — Internship & Job Application Tracker
 
 A modern full-stack web application that helps students manage and track internship and job applications efficiently in one centralized platform.
 
@@ -104,6 +104,7 @@ Create a `.env` file inside the `backend` folder:
 MONGO_URL=your_mongodb_connection_string
 PORT=5000
 ```
+```npx nodemon server.js
 
 Run the backend server:
 
