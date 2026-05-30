@@ -7,7 +7,6 @@ A modern full-stack web application that helps students manage and track interns
 ## Live Demo
 
 - Live Website:http://internship-tracker-9npr.vercel.app/#/
-- GitHub Repository: [Add your GitHub repository link here]
 
 ## About The Project
 
@@ -47,6 +46,7 @@ The project is built using the MERN stack with Firebase Authentication and is de
 ### Deployment
 
 - Vercel
+- Render
 
 ## Project Structure
 
@@ -168,18 +168,6 @@ Firebase Authentication is used for:
 - Session Management
 - Google Authentication
 
-## What We Learned
-
-Through this project, we gained practical experience in:
-
-- Full-stack web development
-- REST API creation
-- MongoDB integration
-- Firebase Authentication
-- React component architecture
-- Deployment workflows
-- Team collaboration using GitHub
-
 ## Team Members
 
 - Ujwal
@@ -189,10 +177,8 @@ Through this project, we gained practical experience in:
 
 ## Future Improvements
 
-- Resume upload support
 - Interview scheduling
 - Email notifications
-- Analytics dashboard
 - AI-powered internship recommendations
 
 ## License
