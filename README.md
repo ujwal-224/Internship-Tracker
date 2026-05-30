@@ -6,7 +6,7 @@ A modern full-stack web application that helps students manage and track interns
 
 ## Live Demo
 
-- Live Website: [Add your live demo link here]
+- Live Website:http://internship-tracker-9npr.vercel.app/#/
 - GitHub Repository: [Add your GitHub repository link here]
 
 ## About The Project
@@ -84,7 +84,7 @@ Internship-Tracker/
 
 ## Installation & Setup
 
-### 1️⃣ Clone the Repository
+###  Clone the Repository
 
 ```bash
 git clone https://github.com/your-username/Internship-Tracker.git
