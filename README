@@ -6,14 +6,14 @@ A modern full-stack web application that helps students manage and track interns
 
 ## Live Demo
 
-- Live Website: Internship Tracker Live Demo
-- GitHub Repository: (Add your GitHub repository link here)
+- Live Website: [Add your live demo link here]
+- GitHub Repository: [Add your GitHub repository link here]
 
 ## About The Project
 
-Internship Tracker is designed to simplify the internship application process for students by providing a centralized dashboard to manage applications, monitor statuses, store recruiter details, and organize important information efficiently.
+Internship Tracker simplifies the internship application process for students by providing a centralized dashboard to manage applications, monitor statuses, store recruiter details, and organize important information.
 
-The project is built using the MERN Stack, Firebase Authentication, and deployed using Vercel.
+The project is built using the MERN stack with Firebase Authentication and is designed for deployment on Vercel.
 
 ## Features
 
@@ -52,29 +52,34 @@ The project is built using the MERN Stack, Firebase Authentication, and deployed
 
 ```
 Internship-Tracker/
-│
 ├── backend/
 │   ├── models/
-│   │   └── Application.js
+│   │   ├── Application.js
+│   │   ├── Note.js
+│   │   └── User.js
 │   ├── routes/
+│   │   ├── applicationRoutes.js
+│   │   ├── noteRoutes.js
+│   │   └── userRoutes.js
 │   ├── server.js
 │   ├── package.json
 │   └── .env
-│
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── pages/
-│   ├── services/
-│   ├── utils/
-│   ├── firebase.js
-│   ├── App.jsx
-│   └── main.jsx
-│
-├── public/
-├── package.json
-├── vite.config.js
-└── README.md
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   ├── App.jsx
+│   │   ├── config.js
+│   │   ├── firebase.js
+│   │   └── main.jsx
+│   ├── package.json
+│   ├── vite.config.js
+│   └── eslint.config.js
+└── README
 ```
 
 ## Installation & Setup
@@ -112,15 +117,16 @@ or
 nodemon server.js
 ```
 
-###  Frontend Setup
+### Frontend Setup
 
-Open a new terminal:
+Open a new terminal and run:
 
 ```bash
+cd frontend
 npm install
 ```
 
-Create a `.env` file:
+Create a `.env` file inside the `frontend` folder:
 
 ```env
 VITE_FIREBASE_API_KEY=your_key
