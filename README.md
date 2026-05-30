@@ -181,6 +181,3 @@ Firebase Authentication is used for:
 - Email notifications
 - AI-powered internship recommendations
 
-## License
-
-This project is licensed under the MIT License.
